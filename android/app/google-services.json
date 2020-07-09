@@ -1,0 +1,135 @@
+{
+  "project_info": {
+    "project_number": "176359262937",
+    "firebase_url": "https://timytime-app.firebaseio.com",
+    "project_id": "timytime-app",
+    "storage_bucket": "timytime-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176359262937:android:a9cbdd7c2ac36118e44cc8",
+        "android_client_info": {
+          "package_name": "com.example.timytime_v03"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176359262937-4h6teh69lk7snu4d5m63gd9e1o2k2mic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk_imlnVftyTzraHJCFq0gp80KzXzjzEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176359262937-4h6teh69lk7snu4d5m63gd9e1o2k2mic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176359262937:android:e8ce4028dde01498e44cc8",
+        "android_client_info": {
+          "package_name": "com.lazaarworks.TimyTimeMain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176359262937-bcg9cbu0pvbo2d6jbftfrfgpn1tj55lr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lazaarworks.TimyTimeMain",
+            "certificate_hash": "f5b6643f9f05776632621f098e535fb10889be67"
+          }
+        },
+        {
+          "client_id": "176359262937-4h6teh69lk7snu4d5m63gd9e1o2k2mic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk_imlnVftyTzraHJCFq0gp80KzXzjzEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176359262937-4h6teh69lk7snu4d5m63gd9e1o2k2mic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176359262937:android:b6919328f0c4287be44cc8",
+        "android_client_info": {
+          "package_name": "com.lazaarworks.timytime_v03"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176359262937-4h6teh69lk7snu4d5m63gd9e1o2k2mic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk_imlnVftyTzraHJCFq0gp80KzXzjzEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176359262937-4h6teh69lk7snu4d5m63gd9e1o2k2mic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176359262937:android:2256d83a0e195c38e44cc8",
+        "android_client_info": {
+          "package_name": "com.maliktariqarbi03.timelayoutpractice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176359262937-4h6teh69lk7snu4d5m63gd9e1o2k2mic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk_imlnVftyTzraHJCFq0gp80KzXzjzEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176359262937-4h6teh69lk7snu4d5m63gd9e1o2k2mic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
