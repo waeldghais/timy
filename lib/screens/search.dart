@@ -1,12 +1,9 @@
 import 'dart:async';
-
-import 'package:TimyTimeMain/home_lancher.dart';
 import 'package:TimyTimeMain/models/channel.dart';
 import 'package:TimyTimeMain/models/shows.dart';
 import 'package:TimyTimeMain/screens/detail-screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:date_time_format/date_time_format.dart';
 

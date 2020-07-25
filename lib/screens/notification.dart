@@ -24,16 +24,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-    var android = AndroidInitializationSettings('ic_launcher');
-    var iOS = IOSInitializationSettings();
-    var initSettings = InitializationSettings(android, iOS);
+    flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+      var android = AndroidInitializationSettings('ic_launcher');
+      var iOS = IOSInitializationSettings();
+      var initSettings = InitializationSettings(android, iOS);
     flutterLocalNotificationsPlugin.initialize(initSettings,
         onSelectNotification:onSelectNotification );
     super.initState();
   }
 
-  Future<dynamic> onSelectNotification(String payload){
+  Future<dynamic> onSelectNotification(String payload) async{
     Timer(Duration(seconds: 3),(){
       Navigator.of(context).push(MaterialPageRoute(builder: (_)=>DetailScreen(payload)));
     });

@@ -11,10 +11,12 @@ class PlayingNext extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Channels playingNextChannel;
-   final playingNext= Provider.of<ShowsModel>(context,listen: false).nextPlaying;
-   if(playingNext.isNotEmpty){
-     playingNextChannel=Provider.of<ChannelModel>(context,listen: false).findByChannelId(playingNext[0].channelUid);
-   }
+    final playingNext =
+        Provider.of<ShowsModel>(context, listen: false).nextPlaying;
+    if (playingNext.isNotEmpty) {
+      playingNextChannel = Provider.of<ChannelModel>(context, listen: false)
+          .findByChannelId(playingNext[0].channelUid);
+    }
     return Container(
       child: Stack(children: <Widget>[
         Container(
@@ -28,76 +30,88 @@ class PlayingNext extends StatelessWidget {
                   child: Container(
                     height: 90,
                     color: Color.fromRGBO(64, 64, 64, 1),
-                    child:playingNext.isEmpty?Center(child:Text('No Show in 24 hours') ): GestureDetector(
-                      onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (_)=>DetailScreen(playingNext[0].id))),
-                                          child: Row(
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              height: 90,
-                              width: 70,
-                              color: Color.fromRGBO(32, 32, 32, 1),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    "Playing",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 19),
-                                  ),
-                                  Text(
-                                    "NEXT",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
+                    child: playingNext.isEmpty
+                        ? Center(
+                            child: Text(
+                            'No Show for today',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20.0),
+                          ))
+                        : GestureDetector(
+                            onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) =>
+                                        DetailScreen(playingNext[0].id))),
+                            child: Row(
                               children: <Widget>[
-                                Expanded(
-                                  child: Center(
-                                    child: Text(
-                                      playingNext[0].showTitle,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18),
-                                          textAlign: TextAlign.center,
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Container(
+                                    height: 90,
+                                    width: 70,
+                                    color: Color.fromRGBO(32, 32, 32, 1),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          "Playing",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 19),
+                                        ),
+                                        Text(
+                                          "NEXT",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
                                 Expanded(
-                                    child: Center(
-                                        child: Image.network(
-                                  playingNextChannel.logoLink,
-                                  height: 70,
-                                  width: 90,
-                                )))
+                                  child: Column(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Center(
+                                          child: Text(
+                                            playingNext[0].showTitle,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                          child: Center(
+                                              child: Image.network(
+                                        playingNextChannel.logoLink,
+                                        height: 70,
+                                        width: 90,
+                                      )))
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: 0, top: 0, bottom: 0),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        playingNext[0].showsCoverLink,
+                                        fit: BoxFit.cover,
+                                        width: 70,
+                                        height: double.infinity,
+                                      )),
+                                ),
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 0, top: 0, bottom: 0),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  playingNext[0].showsCoverLink,
-                                  fit: BoxFit.cover,
-                                  width: 70,
-                                  height: double.infinity,
-                                )),
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
                 left: 40,

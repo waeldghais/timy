@@ -1,9 +1,6 @@
 import 'package:TimyTimeMain/helper/DBHelper.dart';
-import 'package:TimyTimeMain/home_lancher.dart';
 import 'package:TimyTimeMain/models/channel.dart';
 import 'package:TimyTimeMain/models/shows.dart';
-import 'package:TimyTimeMain/styling/constant.dart';
-import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:date_time_format/date_time_format.dart';

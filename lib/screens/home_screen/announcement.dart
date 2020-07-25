@@ -26,7 +26,7 @@ class Announcement extends StatelessWidget {
             padding:  EdgeInsets.only(top:30.0,left: 10),
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 3,
+                itemCount: 1,
                 itemBuilder:(context,i)=> Padding(
                   padding: EdgeInsets.only(right: 40),
                     child: Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRcqV9MaZM-SRfpKPF3uZwl1HYecrixpAs_QetF9xFH5N5yjbO5&usqp=CAU'),),
