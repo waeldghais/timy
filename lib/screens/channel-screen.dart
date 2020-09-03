@@ -191,7 +191,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 25, left: 30, right: 30),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         child: Card(
                           child: Container(
                             height: 90,
@@ -256,7 +256,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 25, left: 30, right: 30),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         child: Card(
                           child: Container(
                             height: 90,
@@ -326,7 +326,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 25, left: 30, right: 30),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
                         child: Card(
                           child: Container(
                             height: 90,

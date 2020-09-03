@@ -3,7 +3,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:TimyTimeMain/screens/auth_screens/login.dart';
 import 'package:TimyTimeMain/screens/auth_screens/register.dart';
 
-
 class Welcome extends StatefulWidget {
   @override
   _WelcomeState createState() => _WelcomeState();
@@ -14,105 +13,102 @@ class _WelcomeState extends State<Welcome> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Builder(
-          builder: (context) => Scaffold(
+        builder: (context) => Scaffold(
           body: Stack(
             fit: StackFit.expand,
-
             children: <Widget>[
               Container(
                 decoration: new BoxDecoration(
-                  image: new DecorationImage(
-                    image: AssetImage(
-                      'assets/welcomebg.jpg'
-                    ),
-                    fit: BoxFit.cover
-                  )
-                ),
+                    image: new DecorationImage(
+                        image: AssetImage('assets/welcomebg.jpg'),
+                        fit: BoxFit.cover)),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(38.0),
                 child: Center(
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: SizedBox(
-                        width: 400,
-                        height: 50.0,
-                        child: RaisedButton(
+                      width: 400,
+                      height: 50.0,
+                      child: RaisedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Register()
-                        )
-                        );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Register()));
                         },
-                        child: const Text('Register new account', style: TextStyle(fontSize: 20)),
+                        child: const Text('Register new account',
+                            style: TextStyle(fontSize: 20)),
                         color: Hexcolor('#efba29'),
                         textColor: Colors.black,
                         elevation: 7,
                         shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(28.0),
-                                side: BorderSide(color: Colors.transparent)
-                        ),
+                            borderRadius: new BorderRadius.circular(2.0),
+                            side: BorderSide(color: Colors.transparent)),
                       ),
                     ),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top:38.0,left:38.0,right:38.0,bottom:110.0),
+                padding: const EdgeInsets.only(
+                    top: 38.0, left: 38.0, right: 38.0, bottom: 110.0),
                 child: Center(
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: SizedBox(
-                        width: 400,
-                        height: 50.0,
-                        child: FlatButton(
+                      width: 400,
+                      height: 50.0,
+                      child: FlatButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()
-                        )
-                        );
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Login()));
                         },
-                        child: const Text('Login', style: TextStyle(fontSize: 20)),
+                        child:
+                            const Text('Login', style: TextStyle(fontSize: 20)),
                         color: Hexcolor('#efba29'),
                         textColor: Colors.black,
                         // elevation: 7,
                         shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(28.0),
-                                side: BorderSide(color: Colors.transparent)
-                        ),
+                            borderRadius: new BorderRadius.circular(2.0),
+                            side: BorderSide(color: Colors.transparent)),
                       ),
                     ),
                   ),
                 ),
               ),
-
               Padding(
-                padding: const EdgeInsets.only(bottom:180.0),
+                padding: const EdgeInsets.only(bottom: 520.0),
                 child: Center(
                   child: SizedBox(
-                    width: 300,
+                    width: 200,
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Text(
-                      'Free for all your professional and personal designs',
-                      style: TextStyle(fontSize: 15,color: Colors.grey,),textAlign: TextAlign.center,
+                        'Search, Schedule and watch form any broadcaster in the world',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey,
                         ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),
               ),
-
-              Padding(
-                padding: const EdgeInsets.only(bottom:220.0),
-                child: Center(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Text(
-                    'Watch Scheduler',
-                    style: TextStyle(fontSize: 40,color: Colors.white),
-                      ),
-                  ),
-                ),
-              )
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 220.0),
+              //   child: Center(
+              //     child: Align(
+              //       alignment: Alignment.bottomCenter,
+              //       child: Text(
+              //         'Kimo Time',
+              //         style: TextStyle(fontSize: 40, color: Colors.white),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

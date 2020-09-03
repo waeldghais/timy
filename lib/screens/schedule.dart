@@ -16,73 +16,74 @@ class Schedule extends StatefulWidget {
 
 class _ScheduleState extends State<Schedule> {
   CalendarController _calendarController = CalendarController();
-  List<ScheduledData> scheduledData=[];
-  List<Shows> products=[];
-  bool isLoading=true;
-  Map<DateTime,List<dynamic>> _events={};//this is map with key of date and value List<dynamic>
+  List<ScheduledData> scheduledData = [];
+  List<Shows> products = [];
+  bool isLoading = true;
+  Map<DateTime, List<dynamic>> _events =
+      {}; //this is map with key of date and value List<dynamic>
   // just want to add values in this map
 
-  initState(){
-    Future.delayed(Duration(seconds: 0),()async{
-     await DBHelper.deleteOldData('schedule');
-    await getScheduledData(context);
+  initState() {
+    Future.delayed(Duration(seconds: 0), () async {
+      await DBHelper.deleteOldData('schedule');
+      await getScheduledData(context);
       setState(() {
-        isLoading=false;
+        isLoading = false;
       });
     });
     super.initState();
   }
 
+  onSelectDate(DateTime date, List<dynamic> idk) async {
+    List<ScheduledData> tempSchedule = [];
+    List<Shows> tempShows = [];
+    var d = DateFormat('dd-MM-yyyy').format(date);
+    final tempData = await DBHelper.getDataByDate('schedule', d);
+    if (tempData.isNotEmpty) {
+      tempData.forEach((data) {
+        tempSchedule.add(ScheduledData(
+            id: data['id'], scheduledDate: DateTime.parse(data['date'])));
+      });
+      for (int i = 0; i < tempSchedule.length; i++) {
+        final product = Provider.of<ShowsModel>(context, listen: false)
+            .findById(tempSchedule[i].id);
+        tempShows.add(product);
+      }
+    }
+    setState(() {
+      scheduledData = tempSchedule;
+      products = tempShows;
+    });
+  }
 
-
-  onSelectDate(DateTime date,List<dynamic> idk) async{
-   List<ScheduledData> tempSchedule=[];
-   List<Shows> tempShows=[];
-   var d=DateFormat('dd-MM-yyyy').format(date);
- final tempData= await DBHelper.getDataByDate('schedule', d);
- if(tempData.isNotEmpty){
-   tempData.forEach((data) {
-        tempSchedule.add(ScheduledData(id: data['id'], scheduledDate: DateTime.parse(data['date'])));
-   });
-   for (int i = 0; i < tempSchedule.length; i++) {
-                final product = Provider.of<ShowsModel>(context, listen: false)
-                    .findById(tempSchedule[i].id);
-                tempShows.add(product);
-              }
-   }
-   setState(() {
-     scheduledData=tempSchedule;
-     products=tempShows;
-   });
-   }
-
-   getScheduledData(BuildContext context) async {
-     List<ScheduledData> tempSchedule=[];
-   List<Shows> tempShows=[];
-   await Provider.of<ShowsModel>(context,listen: false).getShows();
-   await Provider.of<ChannelModel>(context,listen:false).getChannels();
- final tempData= await DBHelper.getData('schedule');
- if(tempData.isNotEmpty){
-   tempData.forEach((data) {
-        tempSchedule.add(ScheduledData(id: data['id'], scheduledDate: DateTime.parse(data['date'])));
+  getScheduledData(BuildContext context) async {
+    List<ScheduledData> tempSchedule = [];
+    List<Shows> tempShows = [];
+    await Provider.of<ShowsModel>(context, listen: false).getShows();
+    await Provider.of<ChannelModel>(context, listen: false).getChannels();
+    final tempData = await DBHelper.getData('schedule');
+    if (tempData.isNotEmpty) {
+      tempData.forEach((data) {
+        tempSchedule.add(ScheduledData(
+            id: data['id'], scheduledDate: DateTime.parse(data['date'])));
         //I want to add value here in map
         //map name?
-        _events.addAll({DateTime.parse(data['date']):[
-          Colors.white
-        ]});
+        _events.addAll({
+          DateTime.parse(data['date']): [Colors.white]
+        });
         //i thought add all with replace old values
         //there isnt any other map
-   });
-   for (int i = 0; i < tempSchedule.length; i++) {
-                final product = Provider.of<ShowsModel>(context, listen: false)
-                    .findById(tempSchedule[i].id);
-                tempShows.add(product);
-              }
-   }
-   setState(() {
-     scheduledData=tempSchedule;
-     products=tempShows;
-   });
+      });
+      for (int i = 0; i < tempSchedule.length; i++) {
+        final product = Provider.of<ShowsModel>(context, listen: false)
+            .findById(tempSchedule[i].id);
+        tempShows.add(product);
+      }
+    }
+    setState(() {
+      scheduledData = tempSchedule;
+      products = tempShows;
+    });
   }
 
   @override
@@ -96,491 +97,238 @@ class _ScheduleState extends State<Schedule> {
       //   backgroundColor: Color.fromRGBO(32, 32, 32, 1)
       // ),
       body: Container(
-                width: double.infinity,
-                 height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(0, 0, 0, 1),
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(0, 0, 0, 1),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 40.0),
+                child: Text(
+                  "My Schedule",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
-                child: SingleChildScrollView(
-                 
-                  child: Column(
-                    children: [
-                      Container( padding: EdgeInsets.only(top: 40.0),
-                          child: Text(
-                            "My Schedule",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                       Container(
-                         child: TableCalendar( startingDayOfWeek: StartingDayOfWeek.monday,
-                         startDay: DateTime.now(),
-                          calendarStyle: CalendarStyle(
-                          weekdayStyle: const TextStyle(color: Colors.white),
-                          todayStyle: const TextStyle(color: Colors.yellowAccent),
-                          todayColor: Colors.grey[800],
-                          
-                          selectedColor: Colors.grey,
-                          markersPositionBottom: 5,
-                          markersColor: Colors.white
-                         ),
-                         daysOfWeekStyle: DaysOfWeekStyle(
-                           weekdayStyle: TextStyle(color: Colors.yellowAccent),
-                         ),
-                        headerStyle: HeaderStyle(
-                        formatButtonTextStyle: TextStyle(color: Colors.yellowAccent,),
-                        formatButtonDecoration: BoxDecoration(
-                      
-                          border: const Border(
-                            
-                            top: BorderSide(), 
-                            bottom: BorderSide(), 
-                            left: BorderSide(), 
-                            right: BorderSide()), 
-                            borderRadius: const BorderRadius.all(Radius.circular(2.0)),),
-                        titleTextStyle: TextStyle(color: Colors.white),
-                        ),
-                        events:_events,
-                         initialCalendarFormat: CalendarFormat.week,
-                          onDaySelected: onSelectDate,
-                           initialSelectedDay: DateTime.now(),
-                           calendarController: _calendarController,
-                         ),
-                       ), isLoading?Center(
-                child: CircularProgressIndicator()):scheduledData.isEmpty?
-                Container(
-                width: double.infinity,
-               // height: double.infinity,
-                decoration: BoxDecoration(color: Colors.black),
-                child: Center(
-                  child: Text(
-                    "No Shows to watch :(",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              Container(
+                child: TableCalendar(
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  startDay: DateTime.now(),
+                  calendarStyle: CalendarStyle(
+                      weekdayStyle: const TextStyle(color: Colors.white),
+                      todayStyle: const TextStyle(color: Colors.yellowAccent),
+                      todayColor: Colors.grey[800],
+                      selectedColor: Colors.grey,
+                      markersPositionBottom: 5,
+                      markersColor: Colors.white),
+                  daysOfWeekStyle: DaysOfWeekStyle(
+                    weekdayStyle: TextStyle(color: Colors.yellowAccent),
                   ),
+                  headerStyle: HeaderStyle(
+                    formatButtonTextStyle: TextStyle(
+                      color: Colors.yellowAccent,
+                    ),
+                    formatButtonDecoration: BoxDecoration(
+                      border: const Border(
+                          top: BorderSide(),
+                          bottom: BorderSide(),
+                          left: BorderSide(),
+                          right: BorderSide()),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(2.0)),
+                    ),
+                    titleTextStyle: TextStyle(color: Colors.white),
+                  ),
+                  events: _events,
+                  initialCalendarFormat: CalendarFormat.week,
+                  onDaySelected: onSelectDate,
+                  initialSelectedDay: DateTime.now(),
+                  calendarController: _calendarController,
                 ),
-              ):
-                        Padding(
-                padding: EdgeInsets.only(top: 0),
-                child: Container(
-                 // height:500, //wtf
-                  width: MediaQuery.of(context).size.width,
-                  color: Color.fromRGBO(0, 0, 0, 1),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                      itemCount: products.length,
-                      itemBuilder: (BuildContext context, int i) {
-                        final productsData =
-                            Provider.of<ShowsModel>(context, listen: false);
-                        final sh = productsData.findById(products[i].id);
-                        final _channel = Provider.of<ChannelModel>(context,
-                                listen: false)
-                            .findById(sh.channelUid);
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      DetailScreen(sh.id)),
-                            ).then((value) {
-                              getScheduledData(context);
-                            });
-                          },
-                          child: Card(
-                            margin: EdgeInsets.only(
-                                top: 14, left: 30, right: 30),
-                            elevation: 0,
-                            child: Container(
-                              width: 340,
-                              height: 150,
-                              color: Color.fromRGBO(32, 32, 32, 0.9),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Image.network(
-                                      products[i].showsCoverLink,
-                                      fit: BoxFit.fill,
-                                      errorBuilder: (context, stack,error )=>Icon(Icons.error),
-                                      //height: double.infinity,//wow
-                                      height:double.infinity,
-                                      width: 100,
-                                    ),
-
-                                    // SizedBox(width: 8,),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 50.0),
-                                            child: Text(
-                                              products[i].showTitle,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight:
-                                                      FontWeight.bold),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 70),
-                                            child: Text(
-                                              products[i].genre,
-                                              style: TextStyle(
-                                                  color: Colors.blue),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 10.0),
-                                            child: Text('subtitle: ${products[i].subTitle}',
-                                              
-                                              
-                                              
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 3,
-                                          ),
-                                          Text(
-                                            'Start in ' +
-                                                DateTimeFormat.format(
-                                                    scheduledData[i]
-                                                        .scheduledDate,
-                                                    format: 'D, M j, H:i'),
-                                            style: TextStyle(
-                                                color: Colors.green),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                                          child: InkWell(
-                                            
-                                              child: Image.network(
-                                                _channel.logoLink,
-                                                fit: BoxFit.fill,
-                                                height: 40,
-                                                width: 40,
-                                              
-                                            ),
-                                            onTap: () {},
-                                          ),
-                                        ),
-                                        Text(
-                                          DateTimeFormat.format(sh.premier,
-                                              format: ' H:i'),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              backgroundColor:
-                                                  Colors.grey[600]),
-                                        ),
-                                      ],
-                                    ),
-                                  ]),
+              ),
+              isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : scheduledData.isEmpty
+                      ? Container(
+                          width: double.infinity,
+                          // height: double.infinity,
+                          decoration: BoxDecoration(color: Colors.black),
+                          child: Center(
+                            child: Text(
+                              "No Shows to watch :(",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
                             ),
                           ),
-                        );
-                      }),
-                ),
-              ), 
-                    ],
-                  ),
-                ),
-                
-                //  Stack(
-                //   children: <Widget>[
-                //     Positioned(
-                //         top: 20,
-                //         left: 20,
-                //         child: Container(
-                //           child: Text(
-                //             "My Schedule",
-                //             style: TextStyle(
-                //                 color: Colors.white,
-                //                 fontSize: 20,
-                //                 fontWeight: FontWeight.bold),
-                //           ),
-                //         )),
-                //     Container(
-                //       padding: EdgeInsets.only(top: 50, left: 1),
-                //       height: 500, width: double.infinity,
-                //       // child: DatePicker(
-                //       //             DateTime.now(),
-                //       //             height: 70,
-                //       //            initialSelectedDate: DateTime.now(),
-                //       //             controller:_controller ,
-                //       //             selectionColor: Color.fromRGBO(185, 64, 134, 1),
-                //       //             dateTextStyle:TextStyle(color: Colors.white,fontSize: 18) ,
-                //       //             dayTextStyle:TextStyle(color: Colors.white,fontSize: 18) ,
-                //       //             onDateChange: (date) {
-                //       //              _selectedValue=date;
-                //       //               print(date.day.toString());
-                //       //             },
-                //       //           ),
-                //       child: TableCalendar(
-                //         calendarController: _calendarController,
-                //       ),
-                //     ),
-                //   ],
-                // ),
-              )
+                        )
+                      : Padding(
+                          padding: EdgeInsets.only(top: 0),
+                          child: Container(
+                            // height:500, //wtf
+                            width: MediaQuery.of(context).size.width,
+                            color: Color.fromRGBO(0, 0, 0, 1),
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: products.length,
+                                itemBuilder: (BuildContext context, int i) {
+                                  final productsData = Provider.of<ShowsModel>(
+                                      context,
+                                      listen: false);
+                                  final sh =
+                                      productsData.findById(products[i].id);
+                                  final _channel = Provider.of<ChannelModel>(
+                                          context,
+                                          listen: false)
+                                      .findById(sh.channelUid);
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetailScreen(sh.id)),
+                                      ).then((value) {
+                                        getScheduledData(context);
+                                      });
+                                    },
+                                    child: Card(
+                                      margin: EdgeInsets.only(
+                                          top: 14, left: 30, right: 30),
+                                      elevation: 0,
+                                      child: Container(
+                                        width: 340,
+                                        height: 150,
+                                        color: Color.fromRGBO(32, 32, 32, 0.9),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Image.network(
+                                                products[i].showsCoverLink,
+                                                fit: BoxFit.fill,
+                                                errorBuilder:
+                                                    (context, stack, error) =>
+                                                        Icon(Icons.error),
+                                                //height: double.infinity,//wow
+                                                height: double.infinity,
+                                                width: 100,
+                                              ),
 
-        //     FutureBuilder<List<ScheduledData>>(
-        //   future: getScheduledData(context),
-        //   builder: (context, snapshot) {
-        //     if (!snapshot.hasData) {
-        //       return Center(
-        //         child: CircularProgressIndicator(),
-        //       );
-        //     }
-
-        //     if (snapshot.data.isNotEmpty) {
-        //       // final scheduledData = snapshot.data;
-        //       // List<Shows> products = [];
-        //       // for (int i = 0; i < scheduledData.length; i++) {
-        //       //   final product = Provider.of<ShowsModel>(context, listen: false)
-        //       //       .findById(scheduledData[i].id);
-        //       //   products.add(product);
-        //       // }
-        //       return Container(
-        //         width: double.infinity,
-        //          height: MediaQuery.of(context).size.height,
-        //         decoration: BoxDecoration(
-        //           color: Color.fromRGBO(20, 30, 70, 0.9),
-        //           borderRadius: BorderRadius.only(
-        //               bottomLeft: Radius.circular(25.0),
-        //               bottomRight: Radius.circular(25.0)),
-        //         ),
-        //         child: SingleChildScrollView(
-                 
-        //           child: Column(
-        //             children: [
-        //               Container(
-        //                   child: Text(
-        //                     "My Schedule",
-        //                     style: TextStyle(
-        //                         color: Colors.white,
-        //                         fontSize: 20,
-        //                         fontWeight: FontWeight.bold),
-        //                   ),
-        //                 ),
-        //                Container(
-                         
-        //                  child: TableCalendar(
-                          
-        //                    initialSelectedDay: DateTime.now(),
-        //                    calendarController: _calendarController,
-        //                  ),
-        //                ),
-        //                 Padding(
-        //         padding: EdgeInsets.only(top: 0),
-        //         child: Container(
-        //          // height:500, //wtf
-        //           width: MediaQuery.of(context).size.width,
-        //           color: Color.fromRGBO(36, 42, 78, 0.6),
-        //           child: ListView.builder(
-        //             shrinkWrap: true,
-        //             physics: NeverScrollableScrollPhysics(),
-        //               itemCount: products.length,
-        //               itemBuilder: (BuildContext context, int i) {
-        //                 final productsData =
-        //                     Provider.of<ShowsModel>(context, listen: false);
-        //                 final sh = productsData.findById(products[i].id);
-        //                 final _channel = Provider.of<ChannelModel>(context,
-        //                         listen: false)
-        //                     .findById(sh.channelUid);
-        //                 return InkWell(
-        //                   onTap: () {
-        //                     Navigator.push(
-        //                       context,
-        //                       MaterialPageRoute(
-        //                           builder: (context) =>
-        //                               DetailScreen(sh.id)),
-        //                     );
-        //                   },
-        //                   child: Card(
-        //                     margin: EdgeInsets.only(
-        //                         top: 14, left: 30, right: 30),
-        //                     elevation: 3,
-        //                     child: Container(
-        //                       width: 340,
-        //                       height: 150,
-        //                       color: Color.fromRGBO(36, 42, 78, 0.9),
-        //                       child: Row(
-        //                           mainAxisAlignment:
-        //                               MainAxisAlignment.spaceBetween,
-        //                           children: <Widget>[
-        //                             Image.network(
-        //                               products[i].showsCoverLink,
-        //                               fit: BoxFit.fill,
-        //                               errorBuilder: (context, stack,error )=>Icon(Icons.error),
-        //                               //height: double.infinity,//wow
-        //                               height:double.infinity,
-        //                               width: 100,
-        //                             ),
-
-        //                             // SizedBox(width: 8,),
-        //                             Expanded(
-        //                               child: Column(
-        //                                 children: <Widget>[
-        //                                   SizedBox(
-        //                                     height: 10,
-        //                                   ),
-        //                                   Text(
-        //                                     products[i].subTitle,
-        //                                     style: TextStyle(
-        //                                         color: Colors.white,
-        //                                         fontSize: 16,
-        //                                         fontWeight:
-        //                                             FontWeight.bold),
-        //                                   ),
-        //                                   SizedBox(
-        //                                     height: 2,
-        //                                   ),
-        //                                   Text(
-        //                                     products[i].genre,
-        //                                     style: TextStyle(
-        //                                         color: Colors.blue),
-        //                                   ),
-        //                                   SizedBox(
-        //                                     height: 2,
-        //                                   ),
-        //                                   Text(
-        //                                     products[i].description,
-        //                                     maxLines: 2,
-        //                                     softWrap: true,
-        //                                     style: TextStyle(
-        //                                         color: Colors.white),
-        //                                   ),
-        //                                   SizedBox(
-        //                                     height: 3,
-        //                                   ),
-        //                                   Text(
-        //                                     'Start in ' +
-        //                                         DateTimeFormat.format(
-        //                                             scheduledData[i]
-        //                                                 .scheduledDate,
-        //                                             format: 'D, M j, H:i'),
-        //                                     style: TextStyle(
-        //                                         color: Colors.green),
-        //                                   )
-        //                                 ],
-        //                               ),
-        //                             ),
-        //                             Column(
-        //                               mainAxisAlignment:
-        //                                   MainAxisAlignment.spaceEvenly,
-        //                               children: <Widget>[
-        //                                 Padding(
-        //                                   padding: EdgeInsets.all(13),
-        //                                   child: InkWell(
-        //                                     child: ClipOval(
-        //                                       child: Image.network(
-        //                                         _channel.logoLink,
-        //                                         fit: BoxFit.fill,
-        //                                         height: 40,
-        //                                         width: 40,
-        //                                       ),
-        //                                     ),
-        //                                     onTap: () {},
-        //                                   ),
-        //                                 ),
-        //                                 Text(
-        //                                   DateTimeFormat.format(sh.premier,
-        //                                       format: 'D, M j, H:i'),
-        //                                   style: TextStyle(
-        //                                       color: Colors.white,
-        //                                       backgroundColor:
-        //                                           Colors.black54),
-        //                                 )
-        //                               ],
-        //                             ),
-        //                           ]),
-        //                     ),
-        //                   ),
-        //                 );
-        //               }),
-        //         ),
-        //       ), 
-        //             ],
-        //           ),
-        //         ),
-                
-        //         //  Stack(
-        //         //   children: <Widget>[
-        //         //     Positioned(
-        //         //         top: 20,
-        //         //         left: 20,
-        //         //         child: Container(
-        //         //           child: Text(
-        //         //             "My Schedule",
-        //         //             style: TextStyle(
-        //         //                 color: Colors.white,
-        //         //                 fontSize: 20,
-        //         //                 fontWeight: FontWeight.bold),
-        //         //           ),
-        //         //         )),
-        //         //     Container(
-        //         //       padding: EdgeInsets.only(top: 50, left: 1),
-        //         //       height: 500, width: double.infinity,
-        //         //       // child: DatePicker(
-        //         //       //             DateTime.now(),
-        //         //       //             height: 70,
-        //         //       //            initialSelectedDate: DateTime.now(),
-        //         //       //             controller:_controller ,
-        //         //       //             selectionColor: Color.fromRGBO(185, 64, 134, 1),
-        //         //       //             dateTextStyle:TextStyle(color: Colors.white,fontSize: 18) ,
-        //         //       //             dayTextStyle:TextStyle(color: Colors.white,fontSize: 18) ,
-        //         //       //             onDateChange: (date) {
-        //         //       //              _selectedValue=date;
-        //         //       //               print(date.day.toString());
-        //         //       //             },
-        //         //       //           ),
-        //         //       child: TableCalendar(
-        //         //         calendarController: _calendarController,
-        //         //       ),
-        //         //     ),
-        //         //   ],
-        //         // ),
-        //       ); // can you please tell me why is everything in a stack? and not ina scrollable widget?
-        //       //client code, client is retarded.
-        //     }
-        //     if (snapshot.data.isEmpty) {
-        //       return Container(
-        //         width: double.infinity,
-        //        // height: double.infinity,
-        //         decoration: bgColor,
-        //         child: Center(
-        //           child: Text(
-        //             "You don\'t have any schedule Items",
-        //             style: TextStyle(color: Colors.white, fontSize: 20),
-        //           ),
-        //         ),
-        //       );
-        //     }
-        //   },
-        // ),
-      );
+                                              // SizedBox(width: 8,),
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 50.0),
+                                                      child: Text(
+                                                        products[i].showTitle,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 70),
+                                                      child: Text(
+                                                        products[i].genre,
+                                                        style: TextStyle(
+                                                            color: Colors.blue),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 10.0),
+                                                      child: Text(
+                                                        'subtitle: ${products[i].subTitle}',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 3,
+                                                    ),
+                                                    Text(
+                                                      'Start in ' +
+                                                          DateTimeFormat.format(
+                                                              scheduledData[i]
+                                                                  .scheduledDate,
+                                                              format:
+                                                                  'D, M j, H:i'),
+                                                      style: TextStyle(
+                                                          color: Colors.green),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10.0,
+                                                            vertical: 10.0),
+                                                    child: InkWell(
+                                                      child: Image.network(
+                                                        _channel.logoLink,
+                                                        fit: BoxFit.fill,
+                                                        height: 40,
+                                                        width: 40,
+                                                      ),
+                                                      onTap: () {},
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    DateTimeFormat.format(
+                                                        sh.premier,
+                                                        format: ' H:i'),
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.grey[600]),
+                                                  ),
+                                                ],
+                                              ),
+                                            ]),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
