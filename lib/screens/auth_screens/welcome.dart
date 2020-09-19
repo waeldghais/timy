@@ -97,18 +97,6 @@ class _WelcomeState extends State<Welcome> {
                   ),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(bottom: 220.0),
-              //   child: Center(
-              //     child: Align(
-              //       alignment: Alignment.bottomCenter,
-              //       child: Text(
-              //         'Kimo Time',
-              //         style: TextStyle(fontSize: 40, color: Colors.white),
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
