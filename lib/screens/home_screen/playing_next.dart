@@ -1,11 +1,11 @@
 // This widget will be in Home Screen to show the user the NEXT playing program
 // it contain the name of programm/countdown timer/cover img/channel logo
-import 'package:TimyTimeMain/models/channel.dart';
+import 'package:TimyTimeMain/models/channelData.dart';
 import 'package:TimyTimeMain/screens/detail-screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import '../../models/shows.dart';
+import '../../models/showsData.dart';
 
 class PlayingNext extends StatelessWidget {
   @override
@@ -25,6 +25,9 @@ class PlayingNext extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               Positioned(
+                left: 40,
+                right: 40,
+                top: 25,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
@@ -54,14 +57,14 @@ class PlayingNext extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
-                                        Text(
+                                        const Text(
                                           "Playing",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 19),
                                         ),
-                                        Text(
+                                        const Text(
                                           "NEXT",
                                           style: TextStyle(
                                               color: Colors.white,
@@ -77,23 +80,15 @@ class PlayingNext extends StatelessWidget {
                                     children: <Widget>[
                                       Expanded(
                                         child: Center(
-                                          child: Text(
-                                            playingNext[0].showTitle,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18),
-                                            textAlign: TextAlign.center,
-                                          ),
+                                          child: _showTitle(playingNext),
                                         ),
                                       ),
                                       Expanded(
-                                          child: Center(
-                                              child: Image.network(
-                                        playingNextChannel.logoLink,
-                                        height: 70,
-                                        width: 90,
-                                      )))
+                                        child: Center(
+                                          child: _showChannelLogo(
+                                              playingNextChannel),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -101,27 +96,46 @@ class PlayingNext extends StatelessWidget {
                                   padding: EdgeInsets.only(
                                       right: 0, top: 0, bottom: 0),
                                   child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        playingNext[0].showsCoverLink,
-                                        fit: BoxFit.cover,
-                                        width: 70,
-                                        height: double.infinity,
-                                      )),
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: _showImgCover(playingNext),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
                   ),
                 ),
-                left: 40,
-                right: 40,
-                top: 25,
               ),
             ],
           ),
         ),
       ]),
+    );
+  }
+
+  _showTitle(playingNextChannel) {
+    return Text(
+      playingNextChannel[0].showTitle,
+      style: TextStyle(
+          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 19),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  _showChannelLogo(playingNextChannel) {
+    return Image.network(
+      playingNextChannel.logoLink,
+      height: 70,
+      width: 90,
+    );
+  }
+
+  _showImgCover(playingNext) {
+    return Image.network(
+      playingNext[0].showsCoverLink,
+      fit: BoxFit.cover,
+      width: 70,
+      height: double.infinity,
     );
   }
 }

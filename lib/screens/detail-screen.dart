@@ -1,7 +1,7 @@
 import 'package:TimyTimeMain/helper/DBHelper.dart';
 
-import 'package:TimyTimeMain/models/channel.dart';
-import 'package:TimyTimeMain/models/shows.dart';
+import 'package:TimyTimeMain/models/channelData.dart';
+import 'package:TimyTimeMain/models/showsData.dart';
 import 'package:TimyTimeMain/screens/channel-screen.dart';
 
 import 'package:TimyTimeMain/screens/schedule.dart';
@@ -167,6 +167,7 @@ class _DetailScreenState extends State<DetailScreen> {
     final shows = Provider.of<ShowsModel>(context).findById(widget.id);
     final _channel =
         Provider.of<ChannelModel>(context).findById(shows.channelUid);
+
     if (shows.description.length > 50) {
       firstHalf = shows.description.substring(0, 50);
       secondHalf = shows.description.substring(50, shows.description.length);
@@ -179,13 +180,7 @@ class _DetailScreenState extends State<DetailScreen> {
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Image.asset(
-              'assets/appbar_logo45.png',
-              fit: BoxFit.cover,
-              height: 42,
-            ),
-          ],
+          children: <Widget>[_appSideLogo()],
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -216,12 +211,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                     0, 0, rectangle.width, rectangle.height));
                           },
                           blendMode: BlendMode.dstIn,
-                          child: Image.network(
-                            shows.showsCoverLink,
-                            fit: BoxFit.fill,
-                            height: 240,
-                            width: double.infinity,
-                          ),
+                          child: _showCoverImg(shows),
                         ),
                       ),
 
@@ -262,9 +252,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                           Expanded(
                                             child: Row(
                                               children: <Widget>[
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
+                                                SizedBox(width: 10),
                                                 Text(
                                                   " Premier ",
                                                   style: TextStyle(
@@ -274,25 +262,15 @@ class _DetailScreenState extends State<DetailScreen> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  DateTimeFormat.format(
-                                                      shows.premier,
-                                                      format: 'D, M j, H:i'),
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
+                                                SizedBox(width: 10),
+                                                _showPremierTime(shows),
                                               ],
                                             ),
                                           ),
                                           Expanded(
                                             child: Row(
                                               children: <Widget>[
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
+                                                SizedBox(width: 10),
                                                 Text(
                                                   " Replay1 ",
                                                   style: TextStyle(
@@ -305,39 +283,10 @@ class _DetailScreenState extends State<DetailScreen> {
                                                 SizedBox(
                                                   width: 7,
                                                 ),
-                                                Text(
-                                                  DateTimeFormat.format(
-                                                      shows.replay1,
-                                                      format: 'D, M j, H:i'),
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
+                                                _showReplayTime(shows),
                                               ],
                                             ),
                                           ),
-
-                                          // Duration bloc
-                                          // Expanded(
-                                          //   child: Row(
-                                          //     children: <Widget>[
-                                          //       // Text(
-                                          //       //   "Duration",
-                                          //       //   style: TextStyle(
-                                          //       //       color: Colors.white,
-                                          //       //       fontWeight:
-                                          //       //           FontWeight.bold),
-                                          //       // ),
-                                          //       SizedBox(
-                                          //         width: 7,
-                                          //       ),
-                                          //       // Text(
-                                          //       //   "2h:30",
-                                          //       //   style: TextStyle(
-                                          //       //       color: Colors.white),
-                                          //       // ),
-                                          //     ],
-                                          //   ),
-                                          // ),
                                         ],
                                       ),
                                     ),
@@ -383,7 +332,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                                     MainAxisAlignment.center,
                                                 children: <Widget>[
                                                   Text(
-                                                    "Main voice :",
+                                                    "Show Language :",
                                                     style: TextStyle(
                                                         fontSize: 15,
                                                         color: Colors.white,
@@ -393,12 +342,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                                   SizedBox(
                                                     width: 7,
                                                   ),
-                                                  Text(
-                                                    shows.mainLanguage,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15),
-                                                  ),
+                                                  _showLanguage(shows)
                                                 ],
                                               ),
                                             ),
@@ -418,12 +362,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                                   SizedBox(
                                                     width: 7,
                                                   ),
-                                                  Text(
-                                                    shows.subTitle,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15),
-                                                  ),
+                                                  _showSubTitle(shows),
                                                 ],
                                               ),
                                             ),
@@ -447,7 +386,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                       height: 30,
                                       width: double.infinity,
                                       child: Center(
-                                        child: Text(
+                                        child: const Text(
                                           "Description",
                                           style: TextStyle(
                                               fontSize: 20,
@@ -458,47 +397,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                   SizedBox(
                                     height: 1,
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 5.0, vertical: 5.0),
-                                    color: Color.fromRGBO(64, 64, 64, 1),
-                                    child: secondHalf.isEmpty
-                                        ? new Text(firstHalf)
-                                        : new Column(
-                                            children: <Widget>[
-                                              new Text(
-                                                flag
-                                                    ? (firstHalf + "...")
-                                                    : (firstHalf + secondHalf),
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15),
-                                              ),
-                                              new InkWell(
-                                                child: new Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    new Text(
-                                                      flag
-                                                          ? "show more"
-                                                          : "show less",
-                                                      style: new TextStyle(
-                                                          color: Colors.blue,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ],
-                                                ),
-                                                onTap: () {
-                                                  setState(() {
-                                                    flag = !flag;
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                  ),
+                                  _showDescription(),
                                 ],
                               ),
                             ),
@@ -518,12 +417,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 InkWell(
-                                  child: Image.network(
-                                    _channel.logoLink,
-                                    fit: BoxFit.contain,
-                                    height: 60,
-                                    width: 60,
-                                  ),
+                                  child: _channelLogo(_channel),
                                   onTap: () {
                                     Navigator.push(
                                       context,
@@ -533,13 +427,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                     );
                                   },
                                 ),
-                                ///////////////// show title  ///////////////////
-                                Text(shows.showTitle,
-                                    overflow: TextOverflow.clip,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15)),
+                                _showTitle(shows),
                               ],
                             ),
                           ],
@@ -554,57 +442,10 @@ class _DetailScreenState extends State<DetailScreen> {
                           height: 30,
                           width: 30,
                           color: Color.fromRGBO(64, 64, 64, 1).withOpacity(0.8),
-                          child: IconButton(
-                            padding: EdgeInsets.symmetric(),
-                            icon: Icon(
-                              isScheduled ? Icons.remove : Icons.add,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                            onPressed: !isScheduled
-                                ? () async {
-                                    await createAlertDialoge(
-                                        context,
-                                        shows.premier,
-                                        shows.replay1,
-                                        shows.showTitle);
-                                    // setState(() {
-                                    //   shows.toggleScheduleStatus();
-                                    //   // if (shows.isAddToSchedule) {
-                                    //   //   Navigator.push(
-                                    //   //     context,
-                                    //   //     MaterialPageRoute(builder: (context) => Schedule()),
-                                    //   //   );
-                                    //   // } else {
-                                    //   //   Navigator.push(
-                                    //   //     context,
-                                    //   //     MaterialPageRoute(builder: (context) => Schedule()),
-                                    //   //   );
-                                    //   // }
-                                    // });
-                                    if (selectedValue == 0)
-                                      Navigator.of(context).pop();
-                                    else {
-                                      setState(() {
-                                        isScheduled = true;
-                                      });
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (_) => Schedule()));
-                                    }
-                                  }
-                                : () async {
-                                    DBHelper.deleteData('schedule', widget.id);
-                                    await flutterLocalNotificationsPlugin
-                                        .cancel(int.parse(widget.id));
-                                    setState(() {
-                                      isScheduled = false;
-                                    });
-                                  },
-                          ),
+                          child: _addToSchedulBtn(shows),
                         ),
                       ),
-//////////////////////////  Genre  ///////////////////////////////////////////////////////
+//////////////////////////  Genre  ////////////////
                       Positioned(
                         top: 340,
                         right: 60,
@@ -613,30 +454,184 @@ class _DetailScreenState extends State<DetailScreen> {
                           width: 85,
                           color: Color.fromRGBO(64, 64, 64, 1).withOpacity(0.8),
                           child: Center(
-                            child: Text(shows.genre,
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                )),
+                            child: _showGenre(shows),
                           ),
                         ),
                       ),
-
-////////////////////// Scheduled  /////////////////////////////////////////////////:::::
                       Positioned(
                         top: 380,
                         right: 30,
-                        child: Text("Scheduled: 7886",
-                            style: TextStyle(
-                              color: Colors.white,
-                            )),
+                        child: _scheduledCounter(),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
+    );
+  }
+
+  _appSideLogo() {
+    return Image.asset(
+      'assets/appbar_logo45.png',
+      fit: BoxFit.cover,
+      height: 42,
+    );
+  }
+
+  _showCoverImg(shows) {
+    return Image.network(
+      shows.showsCoverLink,
+      fit: BoxFit.fill,
+      height: 240,
+      width: double.infinity,
+    );
+  }
+
+  _showPremierTime(shows) {
+    return Text(
+      DateTimeFormat.format(shows.premier, format: 'D, M j, H:i'),
+      style: TextStyle(color: Colors.white),
+    );
+  }
+
+  _showReplayTime(shows) {
+    return Text(
+      DateTimeFormat.format(shows.replay1, format: 'D, M j, H:i'),
+      style: TextStyle(color: Colors.white),
+    );
+  }
+
+  _showLanguage(shows) {
+    return Text(
+      shows.mainLanguage,
+      style: TextStyle(color: Colors.white, fontSize: 15),
+    );
+  }
+
+  _showSubTitle(shows) {
+    return Text(
+      shows.subTitle,
+      style: TextStyle(color: Colors.white, fontSize: 15),
+    );
+  }
+
+  _showDescription() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+      color: Color.fromRGBO(64, 64, 64, 1),
+      child: secondHalf.isEmpty
+          ? new Text(firstHalf)
+          : new Column(
+              children: <Widget>[
+                new Text(
+                  flag ? (firstHalf + "...") : (firstHalf + secondHalf),
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                ),
+                new InkWell(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text(
+                        flag ? "show more" : "show less",
+                        style: new TextStyle(
+                            color: Colors.blue, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    setState(() {
+                      flag = !flag;
+                    });
+                  },
+                ),
+              ],
+            ),
+    );
+  }
+
+  _channelLogo(_channel) {
+    return Image.network(
+      _channel.logoLink,
+      fit: BoxFit.contain,
+      height: 60,
+      width: 60,
+    );
+  }
+
+  _showTitle(shows) {
+    return Text(
+      shows.showTitle,
+      overflow: TextOverflow.clip,
+      style: TextStyle(
+          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+    );
+  }
+
+  _addToSchedulBtn(shows) {
+    return IconButton(
+      padding: EdgeInsets.symmetric(),
+      icon: Icon(
+        isScheduled ? Icons.remove : Icons.add,
+        size: 30,
+        color: Colors.white,
+      ),
+      onPressed: !isScheduled
+          ? () async {
+              await createAlertDialoge(
+                  context, shows.premier, shows.replay1, shows.showTitle);
+              // setState(() {
+              //   shows.toggleScheduleStatus();
+              //   // if (shows.isAddToSchedule) {
+              //   //   Navigator.push(
+              //   //     context,
+              //   //     MaterialPageRoute(builder: (context) => Schedule()),
+              //   //   );
+              //   // } else {
+              //   //   Navigator.push(
+              //   //     context,
+              //   //     MaterialPageRoute(builder: (context) => Schedule()),
+              //   //   );
+              //   // }
+              // });
+              if (selectedValue == 0)
+                Navigator.of(context).pop();
+              else {
+                setState(() {
+                  isScheduled = true;
+                });
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => Schedule()));
+              }
+            }
+          : () async {
+              DBHelper.deleteData('schedule', widget.id);
+              await flutterLocalNotificationsPlugin
+                  .cancel(int.parse(widget.id));
+              setState(() {
+                isScheduled = false;
+              });
+            },
+    );
+  }
+
+  _showGenre(shows) {
+    return Text(
+      shows.genre,
+      style: TextStyle(
+        color: Colors.blue,
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+      ),
+    );
+  }
+
+  _scheduledCounter() {
+    return Text(
+      "Scheduled: 7886",
+      style: TextStyle(
+        color: Colors.white,
+      ),
     );
   }
 }

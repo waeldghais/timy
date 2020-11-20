@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 class ShowsList extends StatelessWidget {
   final String name;
   var product;
+
   ShowsList({this.name, this.product});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,45 +44,23 @@ class ShowsList extends StatelessWidget {
                       child: Container(
                         height: 180,
                         width: 110,
-                        child: Image.network(
-                          product[i].showsCoverLink,
-                          fit: BoxFit.fill,
-                          height: 170,
-                          width: 130,
-                        ),
+                        child: _showCoverImg(i),
                       ),
                     ),
                   );
                 }),
           ),
-
-          // Padding(
-          //   padding:  EdgeInsets.only(top:30.0,left: 10),
-          //   child:GridView.count(
-          //       scrollDirection: Axis.vertical,
-          //       crossAxisCount: 3,
-          //       children: product.,
-
-          //       itemBuilder: (context,i){
-          //         return Padding(
-          //           padding: EdgeInsets.all(5),
-          //           child: GestureDetector(
-          //             onTap: (){
-          //               Navigator.of(context)
-          //                   .push(MaterialPageRoute(builder: (context) {
-          //                 return DetailScreen(product[i].id);
-          //               }));
-          //             },
-          //             child: Container(
-          //               height: 180,width: 110,
-          //               child: Image.network(product[i].showsCoverLink, fit: BoxFit.fill,height: 170,width: 130,),
-          //             ),
-          //           ),
-          //         );}
-          //   ),
-          // ),
         ],
       ),
+    );
+  }
+
+  _showCoverImg(i) {
+    return Image.network(
+      product[i].showsCoverLink,
+      fit: BoxFit.fill,
+      height: 170,
+      width: 130,
     );
   }
 }

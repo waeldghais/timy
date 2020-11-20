@@ -1,11 +1,11 @@
 // This widget will be in Home Screen to show the user the current playing program
 // it contain the name of programm/current time counter/coverimg/channel logo
-import 'package:TimyTimeMain/models/channel.dart';
+import 'package:TimyTimeMain/models/channelData.dart';
 import 'package:TimyTimeMain/screens/detail-screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import '../../models/shows.dart';
+import '../../models/showsData.dart';
 
 class PlayingNow extends StatelessWidget {
   @override
@@ -76,23 +76,15 @@ class PlayingNow extends StatelessWidget {
                                     children: <Widget>[
                                       Expanded(
                                         child: Center(
-                                          child: Text(
-                                            playingNow[0].showTitle,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 19),
-                                            textAlign: TextAlign.center,
-                                          ),
+                                          child: _showTitle(playingNow),
                                         ),
                                       ),
                                       Expanded(
-                                          child: Center(
-                                              child: Image.network(
-                                        playingNowChannel.logoLink,
-                                        height: 70,
-                                        width: 90,
-                                      )))
+                                        child: Center(
+                                          child: _showChannelLogo(
+                                              playingNowChannel),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -100,13 +92,9 @@ class PlayingNow extends StatelessWidget {
                                   padding: EdgeInsets.only(
                                       right: 0, top: 0, bottom: 0),
                                   child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        playingNow[0].showsCoverLink,
-                                        fit: BoxFit.cover,
-                                        width: 70,
-                                        height: double.infinity,
-                                      )),
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: _showImgCover(playingNow),
+                                  ),
                                 ),
                               ],
                             ),
@@ -121,6 +109,32 @@ class PlayingNow extends StatelessWidget {
           ),
         ),
       ]),
+    );
+  }
+
+  _showTitle(playingNow) {
+    return Text(
+      playingNow[0].showTitle,
+      style: TextStyle(
+          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 19),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  _showChannelLogo(playingNowChannel) {
+    return Image.network(
+      playingNowChannel.logoLink,
+      height: 70,
+      width: 90,
+    );
+  }
+
+  _showImgCover(playingNow) {
+    return Image.network(
+      playingNow[0].showsCoverLink,
+      fit: BoxFit.cover,
+      width: 70,
+      height: double.infinity,
     );
   }
 }

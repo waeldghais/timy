@@ -1,5 +1,5 @@
-import 'package:TimyTimeMain/models/channel.dart';
-import 'package:TimyTimeMain/models/shows.dart';
+import 'package:TimyTimeMain/models/channelData.dart';
+import 'package:TimyTimeMain/models/showsData.dart';
 import 'package:TimyTimeMain/screens/show.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +26,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
   bool flag = true;
 
   var currentPage1;
+
   @override
   // ignore: must_call_super
   void didChangeDependencies() {
@@ -72,48 +73,18 @@ class _ChannelScreenState extends State<ChannelScreen> {
                             colors: [Colors.black, Colors.transparent],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter)
-                        .createShader(Rect.fromLTRB(
-                            0, 0, rectangle.width, rectangle.height));
+                        .createShader(
+                      Rect.fromLTRB(0, 0, rectangle.width, rectangle.height),
+                    );
                   },
                   blendMode: BlendMode.dstIn,
-                  child: Image.network(
-                    channel.coverLink,
-                    fit: BoxFit.fill,
-                    width: 100,
-                    height: 100,
-                  ),
-                  // SizedBox(
-                  //   height: 20,
-                  // ),
-                  // Text(
-                  //   channel.channelName,
-                  //   style: TextStyle(
-                  //     color: Colors.white,
-                  //     fontSize: 25,
-                  //   ),
-                  // )
+                  child: _coverImg(channel),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 290),
-              child: Container(
-                height: 20,
-                width: double.infinity,
-                child: SizedBox(),
-              ),
-            ),
-            Padding(
               padding: EdgeInsets.only(top: 8, left: 7),
-              child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    size: 40,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }),
+              child: _backArrow(),
             ),
 
 ////////// Channel logo, Rating, Follow botton, followers number
@@ -125,20 +96,8 @@ class _ChannelScreenState extends State<ChannelScreen> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        Image.network(
-                          channel.logoLink,
-                          fit: BoxFit.scaleDown,
-                          height: 50,
-                          width: 100,
-                        ),
-                        RatingBar(
-                          size: 20,
-                          onRatingChanged: null,
-                          filledIcon: Icons.star,
-                          emptyIcon: Icons.star_border,
-                          filledColor: Colors.yellow,
-                          emptyColor: Colors.yellow,
-                        ),
+                        _channelLogo(channel),
+                        _channelRating(),
                       ],
                     ),
                     SizedBox(
@@ -147,36 +106,9 @@ class _ChannelScreenState extends State<ChannelScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(2),
-                          child: InkWell(
-                            child: Container(
-                              height: 30,
-                              width: 70,
-                              color: Colors.grey[800].withOpacity(0.8),
-                              child: Center(
-                                child: Text(
-                                  "Follow",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            onTap: () {},
-                          ),
-                        ),
+                        _followChannelBtn(),
                         // This will be the number of channel followers
-                        Text(
-                          "998749",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        _followersCounter(),
                       ],
                     )
                   ],
@@ -217,33 +149,15 @@ class _ChannelScreenState extends State<ChannelScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      // SizedBox(
-                                      //   height: 20,
-                                      // ),
-                                      Text(
-                                        "Gender : ${channel.genre}",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 17),
-                                      ),
+                                      _channelGenre(channel),
                                       SizedBox(
                                         height: 3,
                                       ),
-                                      Text(
-                                        "Language : ${channel.mainLanguage}",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 17),
-                                      ),
+                                      _channelLanguage(channel),
                                       SizedBox(
                                         height: 3,
                                       ),
-                                      Text(
-                                        "Sub-title : Arabic",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 17),
-                                      ),
+                                      _subTitle(),
                                     ],
                                   ),
                                 ),
@@ -283,37 +197,9 @@ class _ChannelScreenState extends State<ChannelScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      Text(
-                                        "Region: ${channel.broadCastRegion}",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 13),
-                                      ),
-                                      Text(
-                                        "Satelite: NileSat frq: ${channel.sateliteFrequency}",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 13),
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          Text(
-                                            "Web Stream: ",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 13),
-                                          ),
-                                          GestureDetector(
-                                            child: Text("click here",
-                                                style: TextStyle(
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                    color: Colors.blue)),
-                                            onTap: () {
-                                              launch(
-                                                  '${channel.webStreamLink}');
-                                            },
-                                          ),
-                                        ],
-                                      ),
+                                      _broadcastRegion(channel),
+                                      _frequency(channel),
+                                      _liveStreaming(channel),
                                     ],
                                   ),
                                 )
@@ -351,37 +237,9 @@ class _ChannelScreenState extends State<ChannelScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      GestureDetector(
-                                        child: Image.asset(
-                                          "images/youtube.png",
-                                          fit: BoxFit.cover,
-                                          height: 50,
-                                          width: 50,
-                                        ),
-                                        onTap: () {
-                                          launch('${channel.youtubeLink}');
-                                        },
-                                      ),
-                                      GestureDetector(
-                                          child: Image.asset(
-                                            "images/insta.jfif",
-                                            fit: BoxFit.fill,
-                                            height: 35,
-                                            width: 35,
-                                          ),
-                                          onTap: () {
-                                            launch('${channel.instaLink}');
-                                          }),
-                                      GestureDetector(
-                                          child: Image.asset(
-                                            "images/facebook.jpg",
-                                            fit: BoxFit.scaleDown,
-                                            height: 35,
-                                            width: 35,
-                                          ),
-                                          onTap: () {
-                                            launch('${""}');
-                                          }),
+                                      _youtubeLink(channel),
+                                      _instagramLink(channel),
+                                      _facebookLink(),
                                     ],
                                   ),
                                 ),
@@ -395,78 +253,16 @@ class _ChannelScreenState extends State<ChannelScreen> {
                       padding: EdgeInsets.only(top: 25, left: 30, right: 30),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Card(
+                        child: Container(
                           color: Color.fromRGBO(32, 32, 32, 1),
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                  color: Color.fromRGBO(64, 64, 64, 1),
-                                  height: 30,
-                                  width: double.infinity,
-                                  child: Center(
-                                    child: Text(
-                                      "Description",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
-                                  )),
-                              SizedBox(
-                                height: 1,
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 5.0, vertical: 5.0),
-                                color: Color.fromRGBO(64, 64, 64, 1),
-                                child: secondHalf.isEmpty
-                                    ? new Text(firstHalf)
-                                    : new Column(
-                                        children: <Widget>[
-                                          new Text(
-                                            flag
-                                                ? (firstHalf + "...")
-                                                : (firstHalf + secondHalf),
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15),
-                                          ),
-                                          new InkWell(
-                                            child: new Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                new Text(
-                                                  flag
-                                                      ? "show more"
-                                                      : "show less",
-                                                  style: new TextStyle(
-                                                      color: Colors.blue,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            ),
-                                            onTap: () {
-                                              setState(() {
-                                                flag = !flag;
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                              ),
-                            ],
-                          ),
+                          child: _channelDescription(),
                         ),
                       ),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: ShowsList(
-                          name: "Shows",
-                          product: product1,
-                        )),
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: _channelShowsList(product1),
+                    ),
                   ],
                 ),
               ),
@@ -474,6 +270,243 @@ class _ChannelScreenState extends State<ChannelScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  _backArrow() {
+    return IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          size: 40,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        });
+  }
+
+  _coverImg(channel) {
+    return Image.network(
+      channel.coverLink,
+      fit: BoxFit.fill,
+      width: 100,
+      height: 100,
+    );
+  }
+
+  _channelLogo(channel) {
+    return Image.network(
+      channel.logoLink,
+      fit: BoxFit.scaleDown,
+      height: 50,
+      width: 100,
+    );
+  }
+
+  _channelRating() {
+    return RatingBar(
+      size: 20,
+      onRatingChanged: null,
+      filledIcon: Icons.star,
+      emptyIcon: Icons.star_border,
+      filledColor: Colors.yellow,
+      emptyColor: Colors.yellow,
+    );
+  }
+
+  _channelName(channel) {
+    return Text(
+      channel.channelName,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 25,
+      ),
+    );
+  }
+
+  _followChannelBtn() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(2),
+      child: InkWell(
+        child: Container(
+          height: 30,
+          width: 70,
+          color: Colors.grey[800].withOpacity(0.8),
+          child: Center(
+            child: Text(
+              "Follow",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        onTap: () {},
+      ),
+    );
+  }
+
+  _followersCounter() {
+    return Text(
+      "998749",
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  _channelGenre(channel) {
+    return Text(
+      "Gender : ${channel.genre}",
+      textAlign: TextAlign.left,
+      style: TextStyle(color: Colors.white, fontSize: 17),
+    );
+  }
+
+  _channelLanguage(channel) {
+    return Text(
+      "Language : ${channel.mainLanguage}",
+      textAlign: TextAlign.left,
+      style: TextStyle(color: Colors.white, fontSize: 17),
+    );
+  }
+
+  _subTitle() {
+    return Text(
+      "Sub-title : Arabic",
+      textAlign: TextAlign.left,
+      style: TextStyle(color: Colors.white, fontSize: 17),
+    );
+  }
+
+  _broadcastRegion(channel) {
+    return Text(
+      "Region: ${channel.broadCastRegion}",
+      style: TextStyle(color: Colors.white, fontSize: 13),
+    );
+  }
+
+  _frequency(channel) {
+    return Text(
+      "Satelite: NileSat frq: ${channel.sateliteFrequency}",
+      style: TextStyle(color: Colors.white, fontSize: 13),
+    );
+  }
+
+  _liveStreaming(channel) {
+    return GestureDetector(
+      child: Text("Watch live",
+          style: TextStyle(
+              decoration: TextDecoration.underline, color: Colors.blue)),
+      onTap: () {
+        launch('${channel.webStreamLink}');
+      },
+    );
+  }
+
+  _youtubeLink(channel) {
+    return GestureDetector(
+      child: Image.asset(
+        "images/youtube.png",
+        fit: BoxFit.cover,
+        height: 50,
+        width: 50,
+      ),
+      onTap: () {
+        launch('${channel.youtubeLink}');
+      },
+    );
+  }
+
+  _instagramLink(channel) {
+    return GestureDetector(
+        child: Image.asset(
+          "images/insta.jfif",
+          fit: BoxFit.fill,
+          height: 35,
+          width: 35,
+        ),
+        onTap: () {
+          launch('${channel.instaLink}');
+        });
+  }
+
+  _facebookLink() {
+    return GestureDetector(
+        child: Image.asset(
+          "images/facebook.jpg",
+          fit: BoxFit.scaleDown,
+          height: 35,
+          width: 35,
+        ),
+        onTap: () {
+          launch('${""}');
+        });
+  }
+
+  _channelDescription() {
+    return Column(
+      children: <Widget>[
+        Container(
+            color: Color.fromRGBO(64, 64, 64, 1),
+            height: 30,
+            width: double.infinity,
+            child: Center(
+              child: Text(
+                "Description",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+            )),
+        SizedBox(
+          height: 1,
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+          color: Color.fromRGBO(64, 64, 64, 1),
+          child: secondHalf.isEmpty
+              ? new Text(firstHalf)
+              : new Column(
+                  children: <Widget>[
+                    new Text(
+                      flag ? (firstHalf + "...") : (firstHalf + secondHalf),
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                    new InkWell(
+                      child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          new Text(
+                            flag ? "show more" : "show less",
+                            style: new TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        setState(() {
+                          flag = !flag;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+        ),
+      ],
+    );
+  }
+
+  _channelShowsList(product1) {
+    return ShowsList(
+      name: "Shows",
+      product: product1,
     );
   }
 }

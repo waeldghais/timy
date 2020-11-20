@@ -1,9 +1,9 @@
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:TimyTimeMain/helper/DBHelper.dart';
-import 'package:TimyTimeMain/models/channel.dart';
-import 'package:TimyTimeMain/models/shows.dart';
+import 'package:TimyTimeMain/models/channelData.dart';
+import 'package:TimyTimeMain/models/showsData.dart';
 import 'package:TimyTimeMain/screens/home_screen/announcement.dart';
-import 'package:TimyTimeMain/screens/home_screen/list.dart';
+import 'package:TimyTimeMain/screens/home_screen/showListHolder.dart';
 import 'package:TimyTimeMain/screens/home_screen/today_program.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +75,7 @@ class _HomeState extends State<Home> {
       currentPage6,
       currentPage7,
       currentPage8;
+
   @override
   Widget build(BuildContext context) {
     if (!isLoading) {
@@ -163,78 +164,75 @@ class _HomeState extends State<Home> {
                       padding: EdgeInsets.only(
                         top: 123,
                       ),
-                      child: Container(
-                        height: 25,
-                        width: double.infinity,
-                        child: Center(
-                          child: Text(
-                            "Discover Content",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25),
-                          ),
-                        ),
-                      ),
+                      child: _discoverContentTxt(),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
                           top: 155, right: 0, left: 0, bottom: 0),
-                      child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: ListView(
-                          children: <Widget>[
-                            Announcement("Anouncement"),
-                            ListOfShows(
-                              name: "Popular in my area",
-                              product: product1,
-                            ),
-                            ListOfShows(
-                              name: "movie",
-                              product: product2,
-                            ),
-                            ListOfShows(
-                              name: "series",
-                              product: product3,
-                            ),
-                            ListOfShows(
-                              name: "documentary",
-                              product: product4,
-                            ),
-                            ListOfShows(
-                              name: "sport",
-                              product: product5,
-                            ),
-                            ListOfShows(
-                              name: "talkShow",
-                              product: product6,
-                            ),
-                            ListOfShows(
-                              name: "news",
-                              product: product7,
-                            ),
-                            ListOfShows(
-                              name: "Reality Shows",
-                              product: product8,
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: _showsListsView(),
                     ),
                   ],
                 ),
               ),
             ),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   onPressed: (){
-      //   Firestore.instance.collection('shows')
-      //   .snapshots()
-      //   .listen((data) {
-      //     print(data.documents[1]['category']);
-      //   });
-      // }),
+    );
+  }
+
+  _discoverContentTxt() {
+    return Container(
+      height: 25,
+      width: double.infinity,
+      child: Center(
+        child: Text(
+          "Discover Content",
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
+        ),
+      ),
+    );
+  }
+
+  _showsListsView() {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: ListView(
+        children: <Widget>[
+          Announcement("Anouncement"),
+          ListOfShows(
+            name: "Popular in my area",
+            product: product1,
+          ),
+          ListOfShows(
+            name: "movie",
+            product: product2,
+          ),
+          ListOfShows(
+            name: "series",
+            product: product3,
+          ),
+          ListOfShows(
+            name: "documentary",
+            product: product4,
+          ),
+          ListOfShows(
+            name: "sport",
+            product: product5,
+          ),
+          ListOfShows(
+            name: "talkShow",
+            product: product6,
+          ),
+          ListOfShows(
+            name: "news",
+            product: product7,
+          ),
+          ListOfShows(
+            name: "Reality Shows",
+            product: product8,
+          ),
+        ],
+      ),
     );
   }
 }

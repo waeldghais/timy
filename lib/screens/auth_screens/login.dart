@@ -1,3 +1,4 @@
+import 'package:TimyTimeMain/screens/auth_screens/register.dart';
 import 'package:TimyTimeMain/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -40,7 +41,7 @@ class _LoginState extends State<Login> {
                 //color: Hexcolor('#4d6d9a'),
                 decoration: new BoxDecoration(
                   image: new DecorationImage(
-                      image: AssetImage('assets/sign-in.jpg'),
+                      image: AssetImage('assets/welcomebg.jpg'),
                       fit: BoxFit.cover),
                 ),
                 child: SingleChildScrollView(
@@ -61,6 +62,7 @@ class _LoginState extends State<Login> {
                                 _passwordField(),
                                 SizedBox(height: 20),
                                 _signInBtn(),
+                                _registerBtn()
                               ],
                             ),
                           ),
@@ -127,5 +129,18 @@ class _LoginState extends State<Login> {
         }
       },
     );
+  }
+
+  _registerBtn() {
+    return RaisedButton(
+        color: Hexcolor('#efba29'),
+        child: Text(
+          'Register',
+          style: TextStyle(color: Colors.black),
+        ),
+        onPressed: () => {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Register()))
+            });
   }
 }

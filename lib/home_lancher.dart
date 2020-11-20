@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
-import 'package:TimyTimeMain/models/shows.dart';
-import 'package:TimyTimeMain/models/channel.dart';
+import 'package:TimyTimeMain/models/showsData.dart';
+import 'package:TimyTimeMain/models/channelData.dart';
 import './screens/notification.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -22,14 +22,6 @@ class TimeLayoutState extends State<TimeLayout> {
     super.initState();
   }
 
-  // int _page=2;
-  // final position=[
-  //   Home(),
-  //   Schedule(),
-  //   Search(),
-  //   Profile(),
-  //   Setting(),
-  // ];
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

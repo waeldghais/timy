@@ -1,6 +1,6 @@
 import 'package:TimyTimeMain/helper/DBHelper.dart';
-import 'package:TimyTimeMain/models/channel.dart';
-import 'package:TimyTimeMain/models/shows.dart';
+import 'package:TimyTimeMain/models/channelData.dart';
+import 'package:TimyTimeMain/models/showsData.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:date_time_format/date_time_format.dart';
@@ -159,10 +159,13 @@ class _ScheduleState extends State<Schedule> {
                           // height: double.infinity,
                           decoration: BoxDecoration(color: Colors.black),
                           child: Center(
-                            child: Text(
-                              "No Shows to watch :(",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
+                            child: Padding(
+                              padding: const EdgeInsets.all(30.0),
+                              child: Text(
+                                "No Shows Scheduled!",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
                             ),
                           ),
                         )
@@ -180,19 +183,19 @@ class _ScheduleState extends State<Schedule> {
                                   final productsData = Provider.of<ShowsModel>(
                                       context,
                                       listen: false);
-                                  final sh =
+                                  final show =
                                       productsData.findById(products[i].id);
                                   final _channel = Provider.of<ChannelModel>(
                                           context,
                                           listen: false)
-                                      .findById(sh.channelUid);
+                                      .findById(show.channelUid);
                                   return InkWell(
                                     onTap: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                DetailScreen(sh.id)),
+                                                DetailScreen(show.id)),
                                       ).then((value) {
                                         getScheduledData(context);
                                       });
@@ -209,52 +212,26 @@ class _ScheduleState extends State<Schedule> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
-                                              Image.network(
-                                                products[i].showsCoverLink,
-                                                fit: BoxFit.fill,
-                                                errorBuilder:
-                                                    (context, stack, error) =>
-                                                        Icon(Icons.error),
-                                                //height: double.infinity,//wow
-                                                height: double.infinity,
-                                                width: 100,
-                                              ),
-
-                                              // SizedBox(width: 8,),
+                                              _showCoverImg(i),
                                               Expanded(
                                                 child: Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   children: <Widget>[
-                                                    SizedBox(
-                                                      height: 10,
+                                                    SizedBox(height: 10),
+                                                    Center(
+                                                      child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(10.0),
+                                                          child: _showTitle(i)),
                                                     ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 50.0),
-                                                      child: Text(
-                                                        products[i].showTitle,
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
+                                                    SizedBox(height: 5),
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.only(
                                                               right: 70),
-                                                      child: Text(
-                                                        products[i].genre,
-                                                        style: TextStyle(
-                                                            color: Colors.blue),
-                                                      ),
+                                                      child: _showGenre(i),
                                                     ),
                                                     SizedBox(
                                                       height: 10,
@@ -263,26 +240,12 @@ class _ScheduleState extends State<Schedule> {
                                                       padding:
                                                           const EdgeInsets.only(
                                                               right: 10.0),
-                                                      child: Text(
-                                                        'subtitle: ${products[i].subTitle}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
+                                                      child: _showSubtitle(i),
                                                     ),
                                                     SizedBox(
                                                       height: 3,
                                                     ),
-                                                    Text(
-                                                      'Start in ' +
-                                                          DateTimeFormat.format(
-                                                              scheduledData[i]
-                                                                  .scheduledDate,
-                                                              format:
-                                                                  'D, M j, H:i'),
-                                                      style: TextStyle(
-                                                          color: Colors.green),
-                                                    )
+                                                    _showStartIn(i),
                                                   ],
                                                 ),
                                               ),
@@ -297,24 +260,12 @@ class _ScheduleState extends State<Schedule> {
                                                             horizontal: 10.0,
                                                             vertical: 10.0),
                                                     child: InkWell(
-                                                      child: Image.network(
-                                                        _channel.logoLink,
-                                                        fit: BoxFit.fill,
-                                                        height: 40,
-                                                        width: 40,
-                                                      ),
+                                                      child: _channelLogo(
+                                                          _channel),
                                                       onTap: () {},
                                                     ),
                                                   ),
-                                                  Text(
-                                                    DateTimeFormat.format(
-                                                        sh.premier,
-                                                        format: ' H:i'),
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        backgroundColor:
-                                                            Colors.grey[600]),
-                                                  ),
+                                                  _showPremierTimeAndDate(show),
                                                 ],
                                               ),
                                             ]),
@@ -328,6 +279,64 @@ class _ScheduleState extends State<Schedule> {
           ),
         ),
       ),
+    );
+  }
+
+  _showCoverImg(i) {
+    return Image.network(
+      products[i].showsCoverLink,
+      fit: BoxFit.fill,
+      errorBuilder: (context, stack, error) => Icon(Icons.error),
+      //height: double.infinity,//wow
+      height: double.infinity,
+      width: 100,
+    );
+  }
+
+  _showTitle(i) {
+    return Text(
+      products[i].showTitle,
+      style: TextStyle(
+          color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+    );
+  }
+
+  _showGenre(i) {
+    return Text(
+      products[i].genre,
+      style: TextStyle(color: Colors.blue),
+    );
+  }
+
+  _showSubtitle(i) {
+    return Text(
+      'subtitle: ${products[i].subTitle}',
+      style: TextStyle(color: Colors.white),
+    );
+  }
+
+  _showStartIn(i) {
+    return Text(
+      'Start in ' +
+          DateTimeFormat.format(scheduledData[i].scheduledDate,
+              format: 'D, M j, H:i'),
+      style: TextStyle(color: Colors.green),
+    );
+  }
+
+  _channelLogo(_channel) {
+    return Image.network(
+      _channel.logoLink,
+      fit: BoxFit.fill,
+      height: 40,
+      width: 40,
+    );
+  }
+
+  _showPremierTimeAndDate(show) {
+    return Text(
+      DateTimeFormat.format(show.premier, format: ' H:i'),
+      style: TextStyle(color: Colors.white, backgroundColor: Colors.grey[600]),
     );
   }
 }
