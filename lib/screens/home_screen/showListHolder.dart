@@ -23,10 +23,7 @@ class ListOfShows extends StatelessWidget {
             left: 20,
             child: Text(
               name,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),
           Padding(

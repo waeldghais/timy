@@ -3,9 +3,7 @@ import 'package:TimyTimeMain/styling/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 class Profile extends StatelessWidget {
-
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,6 @@ class Profile extends StatelessWidget {
               icon: Icon(Icons.person),
               color: Colors.white,
               label: Text('Logout'),
-              
             ),
           ),
         ],

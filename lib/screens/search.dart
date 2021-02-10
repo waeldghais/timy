@@ -71,13 +71,11 @@ class _SearchState extends State<Search> {
     var devHeight = MediaQuery.of(context).size.height;
     var devWidth = MediaQuery.of(context).size.width;
     return new Scaffold(
-      backgroundColor: Colors.black,
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: BoxDecoration(color: Colors.black),
               child: Column(
                 children: <Widget>[
                   _searchBox(),

@@ -5,7 +5,7 @@ import 'package:TimyTimeMain/screens/home_screen/home.dart';
 import 'package:TimyTimeMain/screens/profile.dart';
 import 'package:TimyTimeMain/screens/schedule.dart';
 import 'package:TimyTimeMain/screens/search.dart';
-import 'package:TimyTimeMain/screens/settings.dart';
+import 'package:TimyTimeMain/screens/setting/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -79,7 +79,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   _homeNavIcon() {
     return BottomNavigationBarItem(
       icon: Icon(Icons.home),
-      label: ('Home'),
+      title: Text('Home'),
       backgroundColor: Color.fromRGBO(32, 32, 32, 1),
     );
   }
@@ -87,7 +87,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   _scheduleNavIcon() {
     return BottomNavigationBarItem(
       icon: Icon(Icons.tv),
-      label: ('Schedule'),
+      title: Text('Schedule'),
       backgroundColor: Color.fromRGBO(32, 32, 32, 1),
     );
   }
@@ -95,7 +95,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   _searchNavIcon() {
     return BottomNavigationBarItem(
       icon: Icon(Icons.search),
-      label: ('Search'),
+      title: Text('Search'),
       backgroundColor: Color.fromRGBO(32, 32, 32, 1),
     );
   }
@@ -103,7 +103,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   _profileNavIcon() {
     return BottomNavigationBarItem(
       icon: Icon(Icons.person),
-      label: ('Profile'),
+      title: Text('Profile'),
       backgroundColor: Color.fromRGBO(32, 32, 32, 1),
     );
   }
@@ -113,7 +113,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       icon: Icon(
         FontAwesomeIcons.slidersH,
       ),
-      label: ('Settings'),
+      title: Text('Settings'),
       backgroundColor: Color.fromRGBO(32, 32, 32, 1),
     );
   }

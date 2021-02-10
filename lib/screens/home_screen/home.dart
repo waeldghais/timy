@@ -137,7 +137,6 @@ class _HomeState extends State<Home> {
       });
     }
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
           "TimyTime",
@@ -150,7 +149,7 @@ class _HomeState extends State<Home> {
           : Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: BoxDecoration(color: Colors.black),
+
               //decoration: bgColor,
 
               child: Container(

@@ -2,7 +2,7 @@ import 'package:TimyTimeMain/screens/auth_screens/register.dart';
 import 'package:TimyTimeMain/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:TimyTimeMain/styling/constant.dart';
 import 'package:TimyTimeMain/styling/loading.dart';
 // import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -120,9 +120,11 @@ class _LoginState extends State<Login> {
       onPressed: () async {
         if (_formKey.currentState.validate()) {
           setState(() => loading = true);
-          dynamic result =
-              await _auth.signInWithEmailAndPaswword(email, password);
-          if (result == null) {
+          dynamic user = (await FirebaseAuth.instance
+              .signInWithEmailAndPassword(email: email, password: password));
+          /*dynamic result =
+              await _auth.signInWithEmailAndPaswword(email, password);*/
+          if (user == null) {
             setState(() => error = 'Could not sign in');
             loading = false;
           }

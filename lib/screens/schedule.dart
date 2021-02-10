@@ -89,50 +89,38 @@ class _ScheduleState extends State<Schedule> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(
-      //     "TimyTime",
-      //   ),
-      //   centerTitle: true,
-      //   backgroundColor: Color.fromRGBO(32, 32, 32, 1)
-      // ),
+      appBar: AppBar(
+        title: Text(
+          "My Schedule",
+        ),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(36, 32, 32, 1),
+      ),
       body: Container(
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(0, 0, 0, 1),
-        ),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                padding: EdgeInsets.only(top: 40.0),
-                child: Text(
-                  "My Schedule",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
               Container(
                 child: TableCalendar(
                   startingDayOfWeek: StartingDayOfWeek.monday,
                   startDay: DateTime.now(),
                   calendarStyle: CalendarStyle(
-                      weekdayStyle: const TextStyle(color: Colors.white),
+                      weekdayStyle: const TextStyle(
+                          color: Colors.black26, fontWeight: FontWeight.bold),
                       todayStyle: const TextStyle(color: Colors.yellowAccent),
                       todayColor: Colors.grey[800],
                       selectedColor: Colors.grey,
                       markersPositionBottom: 5,
                       markersColor: Colors.white),
                   daysOfWeekStyle: DaysOfWeekStyle(
-                    weekdayStyle: TextStyle(color: Colors.yellowAccent),
+                    weekdayStyle: TextStyle(
+                        color: Colors.yellow[800], fontWeight: FontWeight.bold),
                   ),
                   headerStyle: HeaderStyle(
                     formatButtonTextStyle: TextStyle(
-                      color: Colors.yellowAccent,
-                    ),
+                        color: Colors.yellow[800], fontWeight: FontWeight.bold),
                     formatButtonDecoration: BoxDecoration(
                       border: const Border(
                           top: BorderSide(),
@@ -142,7 +130,7 @@ class _ScheduleState extends State<Schedule> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(2.0)),
                     ),
-                    titleTextStyle: TextStyle(color: Colors.white),
+                    titleTextStyle: TextStyle(color: Colors.red),
                   ),
                   events: _events,
                   initialCalendarFormat: CalendarFormat.week,
@@ -157,14 +145,13 @@ class _ScheduleState extends State<Schedule> {
                       ? Container(
                           width: double.infinity,
                           // height: double.infinity,
-                          decoration: BoxDecoration(color: Colors.black),
+
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.all(30.0),
                               child: Text(
                                 "No Shows Scheduled!",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
+                                style: TextStyle(fontSize: 20),
                               ),
                             ),
                           ),
