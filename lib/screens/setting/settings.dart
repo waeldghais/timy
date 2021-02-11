@@ -3,6 +3,7 @@ import 'package:TimyTimeMain/services/auth_service.dart';
 import 'package:TimyTimeMain/screens/setting/Theme/Theme.dart';
 import 'package:TimyTimeMain/screens/setting/Languge/Languge.dart';
 import 'package:TimyTimeMain/screens/setting/Feedback/feedback.dart';
+import 'package:TimyTimeMain/localization/Cost_localization.dart';
 
 class Setting extends StatefulWidget {
   @override
@@ -60,7 +61,7 @@ class _Setting extends State<Setting> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Setting",
+            'Setting',
           ),
           centerTitle: true,
           backgroundColor: Color.fromRGBO(36, 32, 32, 1),
@@ -104,13 +105,6 @@ class _Setting extends State<Setting> {
                 ),
                 onTap: () {
                   gettap(str[index], context);
-
-                  /*if (str[index] == 'Logout') {
-                        _auth.signOut().then((value) => Navigator.of(context)
-                            .pushReplacement(_createRoutesignOut()));
-                      } else if (str[index] == 'Change theme') {
-                        //provider.toggletheme();
-                      }*/
                 },
               );
             },

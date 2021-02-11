@@ -1,4 +1,6 @@
+import 'package:TimyTimeMain/main.dart';
 import 'package:flutter/material.dart';
+import 'package:TimyTimeMain/localization/Cost_localization.dart';
 
 class Lang extends StatefulWidget {
   @override
@@ -6,7 +8,7 @@ class Lang extends StatefulWidget {
 }
 
 class _Lang extends State<Lang> {
-  var nameLang = [
+  final List<String> nameLang = <String>[
     "Français",
     "English",
     "Espagnol",
@@ -14,7 +16,7 @@ class _Lang extends State<Lang> {
     "Chinese",
     "Turkish",
   ];
-  var flagLang = [
+  final List<String> flagLang = <String>[
     "🇫🇷",
     "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     "🇪🇸",
@@ -22,6 +24,19 @@ class _Lang extends State<Lang> {
     "🇨🇳",
     "🇹🇷",
   ];
+  final List<String> langugeCode = <String>[
+    "fr",
+    "en",
+    "es",
+    "ar",
+    "zh",
+    "tr",
+  ];
+  void _changeLang(String language) async {
+    Locale _tmp = await setLocale(language);
+    MyApp.setLocale(context, _tmp);
+    print(language);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +82,9 @@ class _Lang extends State<Lang> {
                 ],
               ),
             ),
-            onTap: () {},
+            onTap: () {
+              _changeLang(langugeCode[index]);
+            },
           );
         },
       ),

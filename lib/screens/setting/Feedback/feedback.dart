@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 
 class Feed extends StatefulWidget {
   @override
@@ -6,6 +8,8 @@ class Feed extends StatefulWidget {
 }
 
 class _Feed extends State<Feed> {
+  TextEditingController _subject = new TextEditingController();
+  TextEditingController _msg = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -20,21 +24,117 @@ class _Feed extends State<Feed> {
         body: Stack(
           children: [
             Positioned(
-              bottom: 20,
-              top: 20,
+              bottom: size.height * 0.1,
+              top: size.height * 0.1,
               left: 20,
               right: 20,
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
                   ),
-                ),
-              ),
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: size.height * 0.09),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextField(
+                            cursorColor: Colors.black,
+                            decoration: new InputDecoration(
+                              prefixIcon: Icon(Icons.subject),
+                              labelText: "Subject",
+                              border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(25.0),
+                                borderSide: new BorderSide(),
+                              ),
+                            ),
+                            controller: _subject,
+                          ),
+                          const SizedBox(height: 40),
+                          TextField(
+                            cursorColor: Colors.black,
+                            decoration: new InputDecoration(
+                              prefixIcon: Icon(Icons.message),
+                              labelText: "Your feedback",
+
+                              border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(25.0),
+                                borderSide: new BorderSide(),
+                              ),
+                              //fillColor: Colors.green
+                            ),
+                            controller: _msg,
+                            minLines:
+                                8, // any number you need (It works as the rows for the textarea)
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                          ),
+                          const SizedBox(height: 40),
+                          RaisedButton(
+                              onPressed: () {
+                                _sendMail(_subject.text, _msg.text);
+                              },
+                              textColor: Colors.white,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(22),
+                                      bottomLeft: Radius.circular(22),
+                                      bottomRight: Radius.circular(10)),
+                                  gradient: LinearGradient(
+                                    colors: <Color>[
+                                      Color(0xFFBDBDBD),
+                                      Color(0xFF787878),
+                                      Color(0xFF424242),
+                                    ],
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(10.0),
+                                child: const Text('Send Message',
+                                    style: TextStyle(fontSize: 20)),
+                              )),
+                        ],
+                      ),
+                    ),
+                  )),
             ),
           ],
         ));
+  }
+}
+
+Future<void> _sendMail(String subject, String msg) async {
+  String username = 'clvtuniss@gmail.com';
+  String password = '20152636Witbs';
+
+  // ignore: deprecated_member_use
+  final smtpServer = gmail(username, password);
+  // Use the SmtpServer class to configure an SMTP server:
+  // final smtpServer = SmtpServer('smtp.domain.com');
+  // See the named arguments of SmtpServer for further configuration
+  // options.
+
+  // Create our message.
+  final message = Message()
+    ..from = Address(username)
+    ..recipients.add('waeldghaisdg@gmail.com')
+    ..subject = subject
+    ..html = "<h4>" + msg + "</h4>";
+
+  try {
+    final sendReport = await send(message, smtpServer);
+    print('Message sent: ' + sendReport.toString());
+  } on MailerException catch (e) {
+    print('Message not sent.');
+    print(e.message);
+    for (var p in e.problems) {
+      print('Problem: ${p.code}: ${p.msg}');
+    }
   }
 }
