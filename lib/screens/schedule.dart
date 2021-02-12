@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:date_time_format/date_time_format.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'detail-screen.dart';
 
 class Schedule extends StatefulWidget {
@@ -91,8 +91,8 @@ class _ScheduleState extends State<Schedule> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "My Schedule",
-        ),
+          "shedule",
+        ).tr(),
         centerTitle: true,
         backgroundColor: Color.fromRGBO(36, 32, 32, 1),
       ),

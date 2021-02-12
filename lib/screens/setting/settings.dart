@@ -3,7 +3,7 @@ import 'package:TimyTimeMain/services/auth_service.dart';
 import 'package:TimyTimeMain/screens/setting/Theme/Theme.dart';
 import 'package:TimyTimeMain/screens/setting/Languge/Languge.dart';
 import 'package:TimyTimeMain/screens/setting/Feedback/feedback.dart';
-import 'package:TimyTimeMain/localization/Cost_localization.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Setting extends StatefulWidget {
   @override
@@ -12,15 +12,17 @@ class Setting extends StatefulWidget {
 
 class _Setting extends State<Setting> {
   final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
+    setState(() {});
     var str = [
       "Theme",
       "Languages",
-      "privacy policy",
-      "About TimyTime",
+      "privacy",
+      "About",
       "Notifications",
-      "Feedback & support",
+      "Feedback",
       "Rate",
     ];
 
@@ -62,7 +64,7 @@ class _Setting extends State<Setting> {
         appBar: AppBar(
           title: Text(
             'Setting',
-          ),
+          ).tr(),
           centerTitle: true,
           backgroundColor: Color.fromRGBO(36, 32, 32, 1),
         ),
@@ -95,7 +97,7 @@ class _Setting extends State<Setting> {
                         child: Text(
                           str[index],
                           style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
+                        ).tr(),
                       ),
                       Padding(
                           padding: EdgeInsets.only(right: 30),
@@ -125,12 +127,12 @@ String gettap(String value, context) {
         Navigator.of(context).push(_createRoute(Lang()));
       }
       break;
-    case "privacy policy":
+    case "privacy":
       {
         return (value);
       }
       break;
-    case "About TimyTime":
+    case "About":
       {
         return (value);
       }
@@ -140,7 +142,7 @@ String gettap(String value, context) {
         return (value);
       }
       break;
-    case "Feedback & support":
+    case "Feedback":
       {
         Navigator.of(context).push(_createRoute(Feed()));
       }

@@ -1,6 +1,5 @@
-import 'package:TimyTimeMain/main.dart';
 import 'package:flutter/material.dart';
-import 'package:TimyTimeMain/localization/Cost_localization.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Lang extends StatefulWidget {
   @override
@@ -9,42 +8,45 @@ class Lang extends StatefulWidget {
 
 class _Lang extends State<Lang> {
   final List<String> nameLang = <String>[
-    "Français",
     "English",
+    "Français",
     "Espagnol",
     "العربية",
     "Chinese",
     "Turkish",
   ];
   final List<String> flagLang = <String>[
-    "🇫🇷",
     "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    "🇫🇷",
     "🇪🇸",
     "🇹🇳",
     "🇨🇳",
     "🇹🇷",
   ];
   final List<String> langugeCode = <String>[
-    "fr",
     "en",
+    "fr",
     "es",
     "ar",
     "zh",
     "tr",
   ];
-  void _changeLang(String language) async {
-    Locale _tmp = await setLocale(language);
-    MyApp.setLocale(context, _tmp);
-    print(language);
-  }
+  final List<String> capitolCode = <String>[
+    "US",
+    "FR",
+    "ES",
+    "TN",
+    "CN",
+    "TR",
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Languages",
-        ),
+          'Languages',
+        ).tr(),
         centerTitle: true,
         backgroundColor: Color.fromRGBO(36, 32, 32, 1),
       ),
@@ -83,7 +85,10 @@ class _Lang extends State<Lang> {
               ),
             ),
             onTap: () {
-              _changeLang(langugeCode[index]);
+              context.locale = Locale(langugeCode[index], capitolCode[index]);
+              setState(() {
+                context.locale;
+              });
             },
           );
         },
