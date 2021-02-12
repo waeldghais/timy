@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
-class MyTheme with ChangeNotifier {
-  static bool _isDark = true;
+class ThemeNotifie extends ChangeNotifier {
+  String _themeName = 'Light';
 
-  ThemeMode currentTheme() {
-    return _isDark ? ThemeMode.dark : ThemeMode.light;
-  }
+  get theme => _themeName;
 
-  void switchTheme() {
-    _isDark = !_isDark;
+  toggletheme() {
+    if (_themeName == 'Light') {
+      _themeName = 'dark';
+    } else if (_themeName == 'dark') {
+      _themeName = 'Light';
+    } else {
+      _themeName = 'dark';
+    }
     notifyListeners();
+    return _themeName;
   }
 }

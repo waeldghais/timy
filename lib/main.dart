@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:TimyTimeMain/services/auth_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'Models/user.dart';
+import 'package:TimyTimeMain/screens/setting/Theme/configTheme.dart';
 
 void main() {
   runApp(EasyLocalization(
@@ -35,7 +36,21 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentTheme.addListener(() {
+      print('change');
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    this.setState(() {
+      context.locale;
+    });
+
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
@@ -44,7 +59,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
-
+        themeMode: currentTheme.currentTheme(),
         home: Wrapper(),
         //home: TimeLayout(),
       ),

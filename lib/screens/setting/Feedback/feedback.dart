@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Feed extends StatefulWidget {
   @override
@@ -10,6 +11,8 @@ class Feed extends StatefulWidget {
 class _Feed extends State<Feed> {
   TextEditingController _subject = new TextEditingController();
   TextEditingController _msg = new TextEditingController();
+  TextEditingController _email = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -17,7 +20,7 @@ class _Feed extends State<Feed> {
         appBar: AppBar(
           title: Text(
             "Feedback",
-          ),
+          ).tr(),
           centerTitle: true,
           backgroundColor: Color.fromRGBO(36, 32, 32, 1),
         ),
@@ -39,10 +42,23 @@ class _Feed extends State<Feed> {
                   ),
                   child: SingleChildScrollView(
                     child: Padding(
-                      padding: EdgeInsets.only(top: size.height * 0.09),
+                      padding: EdgeInsets.only(top: size.height * 0.04),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          TextField(
+                            cursorColor: Colors.black,
+                            decoration: new InputDecoration(
+                              prefixIcon: Icon(Icons.subject),
+                              labelText: "Email",
+                              border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(25.0),
+                                borderSide: new BorderSide(),
+                              ),
+                            ),
+                            controller: _email,
+                          ),
+                          const SizedBox(height: 35),
                           TextField(
                             cursorColor: Colors.black,
                             decoration: new InputDecoration(
@@ -55,12 +71,12 @@ class _Feed extends State<Feed> {
                             ),
                             controller: _subject,
                           ),
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 35),
                           TextField(
                             cursorColor: Colors.black,
                             decoration: new InputDecoration(
                               prefixIcon: Icon(Icons.message),
-                              labelText: "Your feedback",
+                              labelText: "Your_feedback".tr(),
 
                               border: new OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(25.0),
@@ -74,7 +90,7 @@ class _Feed extends State<Feed> {
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
                           ),
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 35),
                           RaisedButton(
                               onPressed: () {
                                 _sendMail(_subject.text, _msg.text);
@@ -96,8 +112,9 @@ class _Feed extends State<Feed> {
                                   ),
                                 ),
                                 padding: const EdgeInsets.all(10.0),
-                                child: const Text('Send Message',
-                                    style: TextStyle(fontSize: 20)),
+                                child: const Text('send',
+                                        style: TextStyle(fontSize: 20))
+                                    .tr(),
                               )),
                         ],
                       ),

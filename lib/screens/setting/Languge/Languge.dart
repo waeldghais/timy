@@ -85,9 +85,8 @@ class _Lang extends State<Lang> {
               ),
             ),
             onTap: () {
-              context.locale = Locale(langugeCode[index], capitolCode[index]);
-              setState(() {
-                context.locale;
+              this.setState(() {
+                context.locale = Locale(langugeCode[index], capitolCode[index]);
               });
             },
           );

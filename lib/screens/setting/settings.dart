@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:TimyTimeMain/services/auth_service.dart';
-import 'package:TimyTimeMain/screens/setting/Theme/Theme.dart';
+import 'package:TimyTimeMain/screens/setting/Theme/configTheme.dart';
 import 'package:TimyTimeMain/screens/setting/Languge/Languge.dart';
 import 'package:TimyTimeMain/screens/setting/Feedback/feedback.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -15,7 +15,11 @@ class _Setting extends State<Setting> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {});
+    //final provider = Provider.of<ThemeNotifie>(context, listen: false);
+    this.setState(() {
+      context.locale;
+    });
+
     var str = [
       "Theme",
       "Languages",
@@ -106,7 +110,12 @@ class _Setting extends State<Setting> {
                   ),
                 ),
                 onTap: () {
-                  gettap(str[index], context);
+                  if (str[index] == 'Theme') {
+                    currentTheme.switchTheme();
+                    print(currentTheme.switchTheme().toString());
+                  } else {
+                    gettap(str[index], context);
+                  }
                 },
               );
             },
@@ -117,11 +126,6 @@ class _Setting extends State<Setting> {
 
 String gettap(String value, context) {
   switch (value) {
-    case "Theme":
-      {
-        Navigator.of(context).push(_createRoute(Themechange()));
-      }
-      break;
     case "Languages":
       {
         Navigator.of(context).push(_createRoute(Lang()));
