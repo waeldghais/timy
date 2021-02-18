@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:date_time_format/date_time_format.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -30,8 +31,8 @@ class _SearchState extends State<Search> {
     //   flutterLocalNotificationsPlugin.initialize(initSettings,
     //       onSelectNotification:onSelectNotification );
     Future.delayed(Duration(seconds: 0), () async {
-      await Provider.of<ShowsModel>(context, listen: false).getShows();
-      await Provider.of<ChannelModel>(context, listen: false).getChannels();
+      //await Provider.of<ShowsModel>(context, listen: false).getShows();
+      //await Provider.of<ChannelModel>(context, listen: false).getChannels();
       setState(() {
         isLoading = false;
         duplicateItems = Provider.of<ShowsModel>(context, listen: false).shows;
@@ -309,7 +310,7 @@ class _SearchState extends State<Search> {
   _noResult() {
     return Center(
       child: Text(
-        result ? "No Result" : " ",
+        result ? "No_Result".tr() : " ",
         style: TextStyle(color: Colors.white, fontSize: 30),
       ),
     );
@@ -346,7 +347,7 @@ class _SearchState extends State<Search> {
               borderSide: BorderSide(color: Colors.white, width: 3.0),
             ),
             focusColor: Colors.white,
-            hintText: "Enter show name",
+            hintText: "show_name".tr(),
             hintStyle: TextStyle(
               color: Colors.white,
               fontSize: 22,
@@ -392,7 +393,7 @@ class _SearchState extends State<Search> {
 
   _mainLanguage(int index) {
     return Text(
-      'Languahe : ${items[index].mainLanguage}',
+      'Language : ${items[index].mainLanguage}',
       style: TextStyle(color: Colors.white),
     );
   }

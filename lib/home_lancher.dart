@@ -5,17 +5,30 @@ import 'package:provider/provider.dart';
 import 'package:TimyTimeMain/models/showsData.dart';
 import 'package:TimyTimeMain/models/channelData.dart';
 import './screens/notification.dart';
+import 'screens/setting/Theme/ThemeProvider.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-class TimeLayout extends StatefulWidget {
+class TimeLayout extends StatelessWidget {
+  const TimeLayout({Key key}) : super(key: key);
+
   @override
-  State<StatefulWidget> createState() {
-    return TimeLayoutState();
+  Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    return TimeLayouts(
+      themeProvider: themeProvider,
+    );
   }
 }
 
-class TimeLayoutState extends State<TimeLayout> {
+class TimeLayouts extends StatefulWidget with WidgetsBindingObserver {
+  final ThemeProvider themeProvider;
+  const TimeLayouts({Key key, @required this.themeProvider}) : super(key: key);
+  @override
+  TimeLayoutState createState() => TimeLayoutState();
+}
+
+class TimeLayoutState extends State<TimeLayouts> {
   final PageStorageBucket bucket = PageStorageBucket();
 
   initState() {
@@ -31,6 +44,7 @@ class TimeLayoutState extends State<TimeLayout> {
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
+          theme: widget.themeProvider.themeData(),
           title: 'TimyTime',
           home: NotificationScreen()),
     );

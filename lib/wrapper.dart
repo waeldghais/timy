@@ -1,4 +1,3 @@
-import 'package:TimyTimeMain/screens/auth_screens/welcome.dart';
 import 'package:TimyTimeMain/screens/auth_screens/welcomeLogin.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

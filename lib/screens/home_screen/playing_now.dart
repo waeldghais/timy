@@ -3,7 +3,7 @@
 import 'package:TimyTimeMain/models/channelData.dart';
 import 'package:TimyTimeMain/screens/detail-screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import '../../models/showsData.dart';
 
@@ -32,9 +32,10 @@ class PlayingNow extends StatelessWidget {
                     color: Color.fromRGBO(64, 64, 64, 1),
                     child: playingNow.isEmpty
                         ? Center(
-                            child: Text('No Show Playing Now',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20.0)),
+                            child: Text('Show_Now',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20.0))
+                                .tr(),
                           )
                         : GestureDetector(
                             onTap: () => Navigator.of(context).push(

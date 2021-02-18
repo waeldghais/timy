@@ -1,9 +1,15 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
-import 'package:TimyTimeMain/services/auth_service.dart';
-import 'package:TimyTimeMain/screens/setting/Theme/configTheme.dart';
+import 'package:TimyTimeMain/screens/setting/Theme/Theme.dart';
 import 'package:TimyTimeMain/screens/setting/Languge/Languge.dart';
 import 'package:TimyTimeMain/screens/setting/Feedback/feedback.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:rating_dialog/rating_dialog.dart';
+import 'About/About.dart';
+import 'privacy/privacy.dart';
 
 class Setting extends StatefulWidget {
   @override
@@ -11,8 +17,6 @@ class Setting extends StatefulWidget {
 }
 
 class _Setting extends State<Setting> {
-  final AuthService _auth = AuthService();
-
   @override
   Widget build(BuildContext context) {
     //final provider = Provider.of<ThemeNotifie>(context, listen: false);
@@ -70,7 +74,7 @@ class _Setting extends State<Setting> {
             'Setting',
           ).tr(),
           centerTitle: true,
-          backgroundColor: Color.fromRGBO(36, 32, 32, 1),
+          //backgroundColor: Color.fromRGBO(36, 32, 32, 1),
         ),
         body: Container(
           width: double.infinity,
@@ -110,12 +114,7 @@ class _Setting extends State<Setting> {
                   ),
                 ),
                 onTap: () {
-                  if (str[index] == 'Theme') {
-                    currentTheme.switchTheme();
-                    print(currentTheme.switchTheme().toString());
-                  } else {
-                    gettap(str[index], context);
-                  }
+                  gettap(str[index], context);
                 },
               );
             },
@@ -126,6 +125,11 @@ class _Setting extends State<Setting> {
 
 String gettap(String value, context) {
   switch (value) {
+    case "Theme":
+      {
+        Navigator.of(context).push(_createRoute(ThemePage()));
+      }
+      break;
     case "Languages":
       {
         Navigator.of(context).push(_createRoute(Lang()));
@@ -133,12 +137,12 @@ String gettap(String value, context) {
       break;
     case "privacy":
       {
-        return (value);
+        Navigator.of(context).push(_createRoute(PrivacyPage()));
       }
       break;
     case "About":
       {
-        return (value);
+        Navigator.of(context).push(_createRoute(About()));
       }
       break;
     case "Notifications":
@@ -153,11 +157,55 @@ String gettap(String value, context) {
       break;
     case "Rate":
       {
-        return (value);
+        _showrate(context);
       }
       break;
   }
   return (value);
+}
+
+// ignore: missing_return
+Void _showrate(context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return RatingDialog(
+          icon: FlutterLogo(
+            size: 100,
+          ),
+          title: "Rating_Dialog".tr(),
+          description: "Tap_rating".tr(),
+          onSubmitPressed: (int rating) {
+            if (rating <= 3) {
+              Fluttertoast.showToast(
+                  msg: "Ohh_No".tr(),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red[300],
+                  textColor: Colors.black,
+                  fontSize: 16.0);
+              Navigator.of(context).push(_createRoute(Feed()));
+            } else {
+              Fluttertoast.showToast(
+                  msg: "Yess!".tr(),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.green[300],
+                  textColor: Colors.black,
+                  fontSize: 16.0);
+            }
+          },
+          submitButton: "submit".tr(),
+          positiveComment: "positiveComment".tr(),
+          negativeComment: "negativeComment".tr(),
+          alternativeButton: "Contact_Us".tr(),
+          onAlternativePressed: () {
+            Navigator.of(context).push(_createRoute(Feed()));
+          },
+        );
+      });
 }
 
 Route _createRoute(dynamic page) {

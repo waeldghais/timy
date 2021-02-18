@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -30,7 +31,7 @@ class _HomeState extends State<Home> {
   void initState() {
     Future.delayed(Duration(seconds: 0), () async {
       await DBHelper.deleteOldData('schedule');
-      await Provider.of<ShowsModel>(context, listen: false).getShows();
+      //await Provider.of<ShowsModel>(context, listen: false).getShows();
       await Provider.of<ChannelModel>(context, listen: false).getChannels();
       await Provider.of<ShowsModel>(context, listen: false)
           .getCurrentAndNextPlayingShows();
@@ -137,12 +138,13 @@ class _HomeState extends State<Home> {
       });
     }
     return Scaffold(
+      //backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
           "TimyTime",
         ),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(36, 32, 32, 1),
+        //backgroundColor: Color.fromRGBO(36, 32, 32, 1),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
@@ -179,14 +181,13 @@ class _HomeState extends State<Home> {
 
   _discoverContentTxt() {
     return Container(
-      height: 25,
+      height: 30,
       width: double.infinity,
       child: Center(
         child: Text(
-          "Discover Content",
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
-        ),
+          "Discover_Content",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        ).tr(),
       ),
     );
   }
@@ -199,35 +200,35 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Announcement("Anouncement"),
           ListOfShows(
-            name: "Popular in my area",
+            name: "Popular_area".tr(),
             product: product1,
           ),
           ListOfShows(
-            name: "movie",
+            name: "movie".tr(),
             product: product2,
           ),
           ListOfShows(
-            name: "series",
+            name: "series".tr(),
             product: product3,
           ),
           ListOfShows(
-            name: "documentary",
+            name: "documentary".tr(),
             product: product4,
           ),
           ListOfShows(
-            name: "sport",
+            name: "sport".tr(),
             product: product5,
           ),
           ListOfShows(
-            name: "talkShow",
+            name: "talkShow".tr(),
             product: product6,
           ),
           ListOfShows(
-            name: "news",
+            name: "news".tr(),
             product: product7,
           ),
           ListOfShows(
-            name: "Reality Shows",
+            name: "Reality_Shows".tr(),
             product: product8,
           ),
         ],

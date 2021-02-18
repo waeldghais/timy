@@ -41,13 +41,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   int _page = 2;
 
-  final position = [
-    Home(),
-    Schedule(),
-    Search(),
-    Profile(),
-    Setting(),
-  ];
+  final position = [Home(), Schedule(), Search(), Profile(), Setting()];
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +73,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   _homeNavIcon() {
     return BottomNavigationBarItem(
       icon: Icon(Icons.home),
-      title: Text('Home'),
+      label: 'Home',
       backgroundColor: Color.fromRGBO(32, 32, 32, 1),
     );
   }
@@ -87,7 +81,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   _scheduleNavIcon() {
     return BottomNavigationBarItem(
       icon: Icon(Icons.tv),
-      title: Text('Schedule'),
+      label: 'Schedule',
       backgroundColor: Color.fromRGBO(32, 32, 32, 1),
     );
   }
@@ -95,7 +89,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   _searchNavIcon() {
     return BottomNavigationBarItem(
       icon: Icon(Icons.search),
-      title: Text('Search'),
+      label: ('Search'),
       backgroundColor: Color.fromRGBO(32, 32, 32, 1),
     );
   }
@@ -103,7 +97,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   _profileNavIcon() {
     return BottomNavigationBarItem(
       icon: Icon(Icons.person),
-      title: Text('Profile'),
+      label: ('Profile'),
       backgroundColor: Color.fromRGBO(32, 32, 32, 1),
     );
   }
@@ -113,7 +107,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       icon: Icon(
         FontAwesomeIcons.slidersH,
       ),
-      title: Text('Settings'),
+      label: ('Settings'),
       backgroundColor: Color.fromRGBO(32, 32, 32, 1),
     );
   }

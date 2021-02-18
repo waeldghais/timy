@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Feed extends StatefulWidget {
   @override
@@ -13,6 +15,58 @@ class _Feed extends State<Feed> {
   TextEditingController _msg = new TextEditingController();
   TextEditingController _email = new TextEditingController();
 
+  Future<void> sendfeedback(subject, msg, email) async {
+    bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+        .hasMatch(email);
+
+    if (_subject.text.isNotEmpty &&
+        _msg.text.isNotEmpty &&
+        _email.text.isNotEmpty) {
+      if (!emailValid) {
+        Fluttertoast.showToast(
+            msg: "Incorrect_Email".tr(),
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red[300],
+            textColor: Colors.black,
+            fontSize: 16.0);
+        _email.clear();
+      } else {
+        Firestore.instance
+            .collection('feedbacks')
+            .add({
+              "subject": _subject.text,
+              "feedback": _msg.text,
+              "from": _email.text
+            })
+            .then((result) => {
+                  Fluttertoast.showToast(
+                      msg: "Feedback_sent".tr(),
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.greenAccent[400],
+                      textColor: Colors.black,
+                      fontSize: 16.0),
+                  _email.clear(),
+                  _subject.clear(),
+                  _msg.clear(),
+                })
+            .catchError((err) => print(err));
+      }
+    } else {
+      Fluttertoast.showToast(
+          msg: "required_fields".tr(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red[300],
+          textColor: Colors.black,
+          fontSize: 16.0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -22,10 +76,26 @@ class _Feed extends State<Feed> {
             "Feedback",
           ).tr(),
           centerTitle: true,
-          backgroundColor: Color.fromRGBO(36, 32, 32, 1),
+          //backgroundColor: Color.fromRGBO(36, 32, 32, 1),
         ),
         body: Stack(
           children: [
+            Positioned(
+              top: 40,
+              bottom: 40,
+              left: 10,
+              right: 10,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                      bottomLeft: Radius.circular(12),
+                      bottomRight: Radius.circular(12)),
+                ),
+              ),
+            ),
             Positioned(
               bottom: size.height * 0.1,
               top: size.height * 0.1,
@@ -33,7 +103,7 @@ class _Feed extends State<Feed> {
               right: 20,
               child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black12,
+                    color: Colors.white24,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
@@ -42,7 +112,10 @@ class _Feed extends State<Feed> {
                   ),
                   child: SingleChildScrollView(
                     child: Padding(
-                      padding: EdgeInsets.only(top: size.height * 0.04),
+                      padding: EdgeInsets.only(
+                          top: size.height * 0.04,
+                          left: size.height * 0.01,
+                          right: size.height * 0.01),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -50,7 +123,7 @@ class _Feed extends State<Feed> {
                             cursorColor: Colors.black,
                             decoration: new InputDecoration(
                               prefixIcon: Icon(Icons.subject),
-                              labelText: "Email",
+                              labelText: "Email".tr(),
                               border: new OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(25.0),
                                 borderSide: new BorderSide(),
@@ -63,7 +136,7 @@ class _Feed extends State<Feed> {
                             cursorColor: Colors.black,
                             decoration: new InputDecoration(
                               prefixIcon: Icon(Icons.subject),
-                              labelText: "Subject",
+                              labelText: "Subjects".tr(),
                               border: new OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(25.0),
                                 borderSide: new BorderSide(),
@@ -90,32 +163,20 @@ class _Feed extends State<Feed> {
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
                           ),
-                          const SizedBox(height: 35),
+                          const SizedBox(height: 25),
                           RaisedButton(
-                              onPressed: () {
-                                _sendMail(_subject.text, _msg.text);
-                              },
-                              textColor: Colors.white,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(22),
-                                      bottomLeft: Radius.circular(22),
-                                      bottomRight: Radius.circular(10)),
-                                  gradient: LinearGradient(
-                                    colors: <Color>[
-                                      Color(0xFFBDBDBD),
-                                      Color(0xFF787878),
-                                      Color(0xFF424242),
-                                    ],
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(10.0),
-                                child: const Text('send',
-                                        style: TextStyle(fontSize: 20))
-                                    .tr(),
-                              )),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                side: BorderSide(color: Colors.grey[600])),
+                            onPressed: () {
+                              sendfeedback(
+                                  _subject.text, _msg.text, _email.text);
+                            },
+                            color: Colors.black87,
+                            textColor: Colors.white,
+                            child: Text("send", style: TextStyle(fontSize: 14))
+                                .tr(),
+                          ),
                         ],
                       ),
                     ),

@@ -3,7 +3,7 @@
 import 'package:TimyTimeMain/models/channelData.dart';
 import 'package:TimyTimeMain/screens/detail-screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import '../../models/showsData.dart';
 
@@ -36,10 +36,10 @@ class PlayingNext extends StatelessWidget {
                     child: playingNext.isEmpty
                         ? Center(
                             child: Text(
-                            'No Show for today',
+                            'Show_today',
                             style:
                                 TextStyle(color: Colors.white, fontSize: 20.0),
-                          ))
+                          ).tr())
                         : GestureDetector(
                             onTap: () => Navigator.of(context).push(
                                 MaterialPageRoute(

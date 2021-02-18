@@ -8,12 +8,12 @@ class Lang extends StatefulWidget {
 
 class _Lang extends State<Lang> {
   final List<String> nameLang = <String>[
-    "English",
+    "Anglais",
     "Français",
     "Espagnol",
-    "العربية",
-    "Chinese",
-    "Turkish",
+    "arabe",
+    "chinois",
+    "turc",
   ];
   final List<String> flagLang = <String>[
     "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
@@ -48,49 +48,53 @@ class _Lang extends State<Lang> {
           'Languages',
         ).tr(),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(36, 32, 32, 1),
+        // backgroundColor: Color.fromRGBO(36, 32, 32, 1),
       ),
-      body: ListView.builder(
-        itemCount: nameLang.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            child: Container(
-              decoration: new BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [Colors.white12, Colors.white70],
-                  ),
-                  boxShadow: [
-                    new BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 8.0,
+      body: Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: ListView.builder(
+          itemCount: nameLang.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              child: Container(
+                decoration: new BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [Colors.white12, Colors.white70],
                     ),
-                  ]),
-              margin: EdgeInsets.only(left: 16, right: 16, top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      nameLang[index],
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    boxShadow: [
+                      new BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8.0,
+                      ),
+                    ]),
+                margin: EdgeInsets.only(left: 16, right: 16, top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                        nameLang[index],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ).tr(),
                     ),
-                  ),
-                  Padding(
-                      padding: EdgeInsets.only(right: 30),
-                      child: Text(flagLang[index])),
-                ],
+                    Padding(
+                        padding: EdgeInsets.only(right: 30),
+                        child: Text(flagLang[index])),
+                  ],
+                ),
               ),
-            ),
-            onTap: () {
-              this.setState(() {
-                context.locale = Locale(langugeCode[index], capitolCode[index]);
-              });
-            },
-          );
-        },
+              onTap: () {
+                this.setState(() {
+                  context.locale =
+                      Locale(langugeCode[index], capitolCode[index]);
+                });
+              },
+            );
+          },
+        ),
       ),
     );
   }

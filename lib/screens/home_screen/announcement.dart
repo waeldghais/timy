@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Announcement extends StatelessWidget {
   final String name;
@@ -16,11 +17,8 @@ class Announcement extends StatelessWidget {
             left: 20,
             child: Text(
               name,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
-            ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ).tr(),
           ),
           Padding(
             padding: EdgeInsets.only(top: 30.0, left: 10),

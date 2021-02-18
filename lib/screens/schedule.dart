@@ -26,7 +26,7 @@ class _ScheduleState extends State<Schedule> {
   initState() {
     Future.delayed(Duration(seconds: 0), () async {
       await DBHelper.deleteOldData('schedule');
-      await getScheduledData(context);
+      //await getScheduledData(context);
       setState(() {
         isLoading = false;
       });
@@ -59,7 +59,7 @@ class _ScheduleState extends State<Schedule> {
   getScheduledData(BuildContext context) async {
     List<ScheduledData> tempSchedule = [];
     List<Shows> tempShows = [];
-    await Provider.of<ShowsModel>(context, listen: false).getShows();
+    //await Provider.of<ShowsModel>(context, listen: false).getShows();
     await Provider.of<ChannelModel>(context, listen: false).getChannels();
     final tempData = await DBHelper.getData('schedule');
     if (tempData.isNotEmpty) {
@@ -94,7 +94,7 @@ class _ScheduleState extends State<Schedule> {
           "shedule",
         ).tr(),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(36, 32, 32, 1),
+        //backgroundColor: Color.fromRGBO(36, 32, 32, 1),
       ),
       body: Container(
         width: double.infinity,
@@ -108,7 +108,7 @@ class _ScheduleState extends State<Schedule> {
                   startDay: DateTime.now(),
                   calendarStyle: CalendarStyle(
                       weekdayStyle: const TextStyle(
-                          color: Colors.black26, fontWeight: FontWeight.bold),
+                          color: Colors.grey, fontWeight: FontWeight.bold),
                       todayStyle: const TextStyle(color: Colors.yellowAccent),
                       todayColor: Colors.grey[800],
                       selectedColor: Colors.grey,
@@ -150,9 +150,9 @@ class _ScheduleState extends State<Schedule> {
                             child: Padding(
                               padding: const EdgeInsets.all(30.0),
                               child: Text(
-                                "No Shows Scheduled!",
+                                "No_Shows_Scheduled",
                                 style: TextStyle(fontSize: 20),
-                              ),
+                              ).tr(),
                             ),
                           ),
                         )
