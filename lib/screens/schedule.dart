@@ -59,7 +59,7 @@ class _ScheduleState extends State<Schedule> {
   getScheduledData(BuildContext context) async {
     List<ScheduledData> tempSchedule = [];
     List<Shows> tempShows = [];
-    //await Provider.of<ShowsModel>(context, listen: false).getShows();
+    await Provider.of<ShowsModel>(context, listen: false).getShows();
     await Provider.of<ChannelModel>(context, listen: false).getChannels();
     final tempData = await DBHelper.getData('schedule');
     if (tempData.isNotEmpty) {

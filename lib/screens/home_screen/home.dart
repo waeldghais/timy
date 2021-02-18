@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
   void initState() {
     Future.delayed(Duration(seconds: 0), () async {
       await DBHelper.deleteOldData('schedule');
-      //await Provider.of<ShowsModel>(context, listen: false).getShows();
+      await Provider.of<ShowsModel>(context, listen: false).getShows();
       await Provider.of<ChannelModel>(context, listen: false).getChannels();
       await Provider.of<ShowsModel>(context, listen: false)
           .getCurrentAndNextPlayingShows();

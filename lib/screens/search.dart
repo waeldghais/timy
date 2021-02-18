@@ -31,8 +31,8 @@ class _SearchState extends State<Search> {
     //   flutterLocalNotificationsPlugin.initialize(initSettings,
     //       onSelectNotification:onSelectNotification );
     Future.delayed(Duration(seconds: 0), () async {
-      //await Provider.of<ShowsModel>(context, listen: false).getShows();
-      //await Provider.of<ChannelModel>(context, listen: false).getChannels();
+      await Provider.of<ShowsModel>(context, listen: false).getShows();
+      await Provider.of<ChannelModel>(context, listen: false).getChannels();
       setState(() {
         isLoading = false;
         duplicateItems = Provider.of<ShowsModel>(context, listen: false).shows;
